@@ -1,0 +1,18 @@
+@import url("base.css");
+
+:root {
+  --bg: #f5f1e8;
+  --surface: #fffdf8;
+  --surface-2: #e8eee5;
+  --text: #263127;
+  --muted: #667064;
+  --accent: #356a43;
+  --accent-soft: #dfeadf;
+  --accent-contrast: #ffffff;
+  --line: #d7ddd2;
+  --placeholder-1: #b9ccb9;
+  --placeholder-2: #6e8e73;
+  --placeholder-text: #203424;
+  --footer-bg: #1f2c22;
+  --footer-text: #e8eee8;
+}

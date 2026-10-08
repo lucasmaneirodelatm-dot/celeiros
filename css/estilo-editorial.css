@@ -1,0 +1,20 @@
+@import url("base.css");
+
+:root {
+  --bg: #fbf7f0;
+  --surface: #fffdf9;
+  --surface-2: #eee4d5;
+  --text: #2b2521;
+  --muted: #756a62;
+  --accent: #8b4b32;
+  --accent-soft: #eee0d7;
+  --accent-contrast: #ffffff;
+  --line: #dfd2c5;
+  --placeholder-1: #ddc8ae;
+  --placeholder-2: #96735b;
+  --placeholder-text: #39271e;
+  --footer-bg: #30241e;
+  --footer-text: #eee4db;
+  --font-main: "Trebuchet MS", system-ui, sans-serif;
+  --font-display: Georgia, "Times New Roman", serif;
+}
