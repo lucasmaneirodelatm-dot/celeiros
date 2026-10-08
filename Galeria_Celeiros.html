@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Galería fotográfica de Celeiros">
+  <title>Galería | Celeiros</title>
+  <style>
+    :root {
+      --ink: #25302b;
+      --muted: #66716a;
+      --line: #e5e8e2;
+      --green: #355e4b;
+      --paper: #fff;
+      --placeholder: #e9ede8;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      width: 100%;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.5;
+    }
+
+    h1, h2, h3 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 700;
+    }
+
+    a { color: inherit; }
+
+    :focus-visible {
+      outline: 3px solid #b37643;
+      outline-offset: 4px;
+    }
+
+    .gallery-shell {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 clamp(20px, 5vw, 64px);
+    }
+
+    .gallery-header { border-bottom: 1px solid var(--line); }
+
+    .header-inner {
+      min-height: 82px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      text-decoration: none;
+      white-space: nowrap;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .brand:hover { opacity: .72; }
+
+    .header-note {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+
+    .gallery-main {
+      padding-top: clamp(50px, 7vw, 96px);
+      padding-bottom: 96px;
+    }
+
+    .intro { max-width: 780px; }
+
+    .eyebrow {
+      margin: 0 0 16px;
+      color: #66816b;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .21em;
+      text-transform: uppercase;
+    }
+
+    .intro h1 {
+      margin: 0;
+      line-height: 1.12;
+      letter-spacing: -.04em;
+      font-size: clamp(38px, 6vw, 64px);
+    }
+
+    .intro-copy {
+      max-width: 640px;
+      margin: 20px 0 0;
+      line-height: 1.8;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      margin: 48px 0 28px;
+      padding-bottom: 23px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .filter {
+      border: 1px solid #dce4da;
+      border-radius: 3px;
+      padding: 10px 16px;
+      background: white;
+      color: var(--green);
+      cursor: pointer;
+      transition: background .2s, color .2s, border-color .2s;
+    }
+
+    .filter:hover { border-color: var(--green); }
+
+    .filter[aria-pressed="true"] {
+      background: var(--green);
+      border-color: var(--green);
+      color: white;
+    }
+
+    .search-wrap { width: min(100%, 300px); }
+
+    .search-wrap label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .search-wrap input {
+      display: block;
+      width: 100%;
+      border: 1px solid #cad5ca;
+      border-radius: 3px;
+      padding: 11px 13px;
+      background: white;
+      color: var(--ink);
+    }
+
+    .search-wrap input:focus { border-color: var(--green); }
+
+    .photo-section {
+      padding: 36px 0 52px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .photo-section[hidden],
+    .photo-card[hidden],
+    #empty-state[hidden] {
+      display: none;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: baseline;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .section-rule {
+      height: 1px;
+      flex: 1;
+      background: var(--line);
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 28px;
+    }
+
+    .photo-card {
+      min-width: 0;
+      margin: 0;
+    }
+
+    .photo-card img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      border-radius: 3px;
+      background: var(--placeholder);
+    }
+
+    .photo-card img.image-missing {
+      object-fit: contain;
+      padding: 30px;
+    }
+
+    .card-meta { padding-top: 16px; }
+
+    .card-meta h3 {
+      margin: 0 0 7px;
+      line-height: 1.25;
+    }
+
+    .card-date {
+      display: block;
+      margin-bottom: 10px;
+      color: #66816b;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .card-description {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 14px;
+    }
+
+    .empty-state {
+      padding: 48px 0;
+      color: var(--muted);
+    }
+
+    .gallery-footer {
+      border-top: 1px solid var(--line);
+      padding: 25px 0 38px;
+    }
+
+    .gallery-footer p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* Visor de imágenes ampliadas */
+    .photo-button {
+      position: relative;
+      display: block;
+      overflow: hidden;
+      width: 100%;
+      border: 0;
+      border-radius: 3px;
+      padding: 0;
+      cursor: zoom-in;
+      background: var(--placeholder);
+      text-align: left;
+    }
+
+    .photo-button img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      display: block;
+      object-fit: cover;
+      transition: transform .45s ease, filter .45s ease;
+    }
+
+    .photo-button:hover img {
+      transform: scale(1.055);
+      filter: brightness(.85);
+    }
+
+    .zoom-mark {
+      position: absolute;
+      right: 14px;
+      bottom: 14px;
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      color: #263a2d;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(0,0,0,.12);
+    }
+
+    .zoom-mark svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    .lightbox[hidden] {
+      display: none;
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 64px 68px 48px;
+      background: rgba(15,23,19,.95);
+    }
+
+    .lightbox-panel {
+      width: min(100%, 1100px);
+      max-height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .lightbox-photo {
+      display: block;
+      max-width: 100%;
+      max-height: 78vh;
+      object-fit: contain;
+    }
+
+    .lightbox-caption {
+      margin: 0;
+      text-align: center;
+      color: #fff;
+      line-height: 1.5;
+    }
+
+    .lightbox-control {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(255,255,255,.44);
+      border-radius: 50%;
+      background: rgba(255,255,255,.09);
+      color: white;
+      cursor: pointer;
+    }
+
+    .lightbox-control:hover {
+      background: rgba(255,255,255,.22);
+    }
+
+    .lightbox-control svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .lightbox-close {
+      top: 17px;
+      right: 20px;
+    }
+
+    .lightbox-prev {
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .lightbox-next {
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    @media (max-width: 780px) {
+      .photo-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 23px;
+      }
+    }
+
+    @media (max-width: 540px) {
+      .lightbox { padding: 65px 16px; }
+      .lightbox-prev, .lightbox-next { top:auto; bottom:12px; transform:none; }
+      .lightbox-prev { left:calc(50% - 57px); }
+      .lightbox-next { right:calc(50% - 57px); }
+      .lightbox-photo { max-height:65vh; }
+
+      .header-inner { min-height: 72px; }
+      .header-note { display: none; }
+      .toolbar { margin-top: 36px; }
+      .search-wrap { width: 100%; }
+      .photo-grid { grid-template-columns: 1fr; }
+      .photo-section { padding: 28px 0 44px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="gallery-header">
+    <div class="gallery-shell header-inner">
+      <a class="brand" href="http://www.celeiros.es/" target="_blank" rel="noopener noreferrer" aria-label="Abrir la web de Celeiros en otra pestaña">
+        Celeiros
+      </a>
+      <span class="header-note">Galería fotográfica</span>
+    </div>
+  </header>
+
+  <main class="gallery-shell gallery-main">
+    <div class="intro">
+      <p class="eyebrow">Memoria visual</p>
+      <h1>Galería</h1>
+      <p class="intro-copy">
+        Una selección de fotografías y recuerdos de Celeiros, organizada por fechas y temas.
+      </p>
+    </div>
+
+    <div class="toolbar">
+      <nav class="filters" aria-label="Filtrar fotografías por categoría">
+        <button type="button" class="filter" data-filter="all" aria-pressed="true">Todas</button>
+        <button type="button" class="filter" data-filter="2026" aria-pressed="false">2026</button>
+        <button type="button" class="filter" data-filter="iglesia" aria-pressed="false">Iglesia</button>
+        <button type="button" class="filter" data-filter="cruceros" aria-pressed="false">Cruceros</button>
+      </nav>
+
+      <div class="search-wrap">
+        <label for="photo-search">Buscar fotografías</label>
+        <input id="photo-search" type="search" autocomplete="off" aria-controls="photo-collections" placeholder="Ej.: iglesia, verano, Vigo...">
+      </div>
+    </div>
+
+    <div id="photo-collections">
+      <section class="photo-section" data-section="2026" aria-labelledby="seccion-2026">
+        <div class="section-heading">
+          <h2 id="seccion-2026">2026</h2>
+          <span class="section-rule" aria-hidden="true"></span>
+        </div>
+
+        <div class="photo-grid">
+          <figure class="photo-card" data-category="2026" data-search="2026 camino piedra galicia paseo paisaje rural primavera marzo">
+            <button type="button" class="photo-button" aria-label="Ampliar fotografía Camino de piedra">
+            <img src="img/foto-2026-uno.jpg" alt="Camino de piedra en un paisaje rural de Galicia" loading="lazy">
+            <span class="zoom-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 3h6v6"></path>
+                <path d="M14 10l7-7"></path>
+                <path d="M9 21H3v-6"></path>
+                <path d="M10 14l-7 7"></path>
+              </svg>
+            </span>
+          </button>
+            <figcaption class="card-meta">
+              <h3>Camino de piedra</h3>
+              <time datetime="2026-03-15" class="card-date">15 marzo 2026</time>
+              <p class="card-description">Paseo por un paisaje rural de Galicia durante la primavera.</p>
+            </figcaption>
+          </figure>
+
+          <figure class="photo-card" data-category="2026" data-search="2026 fiesta celebración desfile coruña cultura calle verano julio">
+            <button type="button" class="photo-button" aria-label="Ampliar fotografía Fiesta y desfile">
+            <img src="img/foto-2026-dos.jpg" alt="Fiesta y desfile en una calle de A Coruña" loading="lazy">
+            <span class="zoom-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 3h6v6"></path>
+                <path d="M14 10l7-7"></path>
+                <path d="M9 21H3v-6"></path>
+                <path d="M10 14l-7 7"></path>
+              </svg>
+            </span>
+          </button>
+            <figcaption class="card-meta">
+              <h3>Fiesta y desfile</h3>
+              <time datetime="2026-07-12" class="card-date">12 julio 2026</time>
+              <p class="card-description">Celebración de verano con ambiente festivo y cultural en la calle.</p>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="photo-section" data-section="iglesia" aria-labelledby="seccion-iglesia">
+        <div class="section-heading">
+          <h2 id="seccion-iglesia">Iglesia</h2>
+          <span class="section-rule" aria-hidden="true"></span>
+        </div>
+
+        <div class="photo-grid">
+          <figure class="photo-card" data-category="iglesia" data-search="iglesia piedra patrimonio arquitectura galicia cruz abril 2026">
+            <button type="button" class="photo-button" aria-label="Ampliar fotografía Iglesia de piedra">
+            <img src="img/foto-iglesia-uno.jpg" alt="Iglesia de piedra de Galicia" loading="lazy">
+            <span class="zoom-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 3h6v6"></path>
+                <path d="M14 10l7-7"></path>
+                <path d="M9 21H3v-6"></path>
+                <path d="M10 14l-7 7"></path>
+              </svg>
+            </span>
+          </button>
+            <figcaption class="card-meta">
+              <h3>Iglesia de piedra</h3>
+              <time datetime="2026-04-08" class="card-date">8 abril 2026</time>
+              <p class="card-description">Arquitectura, patrimonio y detalles de una iglesia tradicional gallega.</p>
+            </figcaption>
+          </figure>
+
+          <figure class="photo-card" data-category="iglesia" data-search="iglesia campanario piedra cambados galicia torres patrimonio mayo 2026">
+            <button type="button" class="photo-button" aria-label="Ampliar fotografía Campanario">
+            <img src="img/foto-iglesia-dos.jpg" alt="Campanario de piedra en Cambados, Galicia" loading="lazy">
+            <span class="zoom-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 3h6v6"></path>
+                <path d="M14 10l7-7"></path>
+                <path d="M9 21H3v-6"></path>
+                <path d="M10 14l-7 7"></path>
+              </svg>
+            </span>
+          </button>
+            <figcaption class="card-meta">
+              <h3>Campanario</h3>
+              <time datetime="2026-05-21" class="card-date">21 mayo 2026</time>
+              <p class="card-description">Campanario y torres de piedra en un conjunto patrimonial gallego.</p>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="photo-section" data-section="cruceros" aria-labelledby="seccion-cruceros">
+        <div class="section-heading">
+          <h2 id="seccion-cruceros">Cruceros</h2>
+          <span class="section-rule" aria-hidden="true"></span>
+        </div>
+
+        <div class="photo-grid">
+          <figure class="photo-card" data-category="cruceros" data-search="cruceros barco velero ría vigo mar galicia junio 2026">
+            <button type="button" class="photo-button" aria-label="Ampliar fotografía Veleros en la ría">
+            <img src="img/foto-cruceros-uno.jpg" alt="Barco y veleros en la ría de Vigo" loading="lazy">
+            <span class="zoom-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 3h6v6"></path>
+                <path d="M14 10l7-7"></path>
+                <path d="M9 21H3v-6"></path>
+                <path d="M10 14l-7 7"></path>
+              </svg>
+            </span>
+          </button>
+            <figcaption class="card-meta">
+              <h3>Veleros en la ría</h3>
+              <time datetime="2026-06-18" class="card-date">18 junio 2026</time>
+              <p class="card-description">Barcos navegando por la ría de Vigo en un día de verano.</p>
+            </figcaption>
+          </figure>
+
+          <figure class="photo-card" data-category="cruceros" data-search="cruceros barcos veleros atardecer puerto grove galicia septiembre 2026">
+            <button type="button" class="photo-button" aria-label="Ampliar fotografía Atardecer en el puerto">
+            <img src="img/foto-cruceros-dos.jpg" alt="Barcos y veleros al atardecer en O Grove, Galicia" loading="lazy">
+            <span class="zoom-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 3h6v6"></path>
+                <path d="M14 10l7-7"></path>
+                <path d="M9 21H3v-6"></path>
+                <path d="M10 14l-7 7"></path>
+              </svg>
+            </span>
+          </button>
+            <figcaption class="card-meta">
+              <h3>Atardecer en el puerto</h3>
+              <time datetime="2026-09-04" class="card-date">4 septiembre 2026</time>
+              <p class="card-description">Barcos y veleros en el puerto de O Grove al final del día.</p>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+    </div>
+
+    <p id="empty-state" class="empty-state" role="status" hidden>No se han encontrado fotografías que coincidan con la búsqueda.</p>
+  </main>
+
+  <!-- Visor de imágenes ampliadas -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Fotografía ampliada" hidden>
+    <button id="lightbox-close" class="lightbox-control lightbox-close" type="button" aria-label="Cerrar fotografía">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 6 6 18"></path>
+        <path d="m6 6 12 12"></path>
+      </svg>
+    </button>
+
+    <button id="lightbox-prev" class="lightbox-control lightbox-prev" type="button" aria-label="Fotografía anterior">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="m15 18-6-6 6-6"></path>
+      </svg>
+    </button>
+
+    <div class="lightbox-panel">
+      <img id="lightbox-image" class="lightbox-photo" alt="">
+      <p id="lightbox-caption" class="lightbox-caption" aria-live="polite"></p>
+    </div>
+
+    <button id="lightbox-next" class="lightbox-control lightbox-next" type="button" aria-label="Fotografía siguiente">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="m9 18 6-6-6-6"></path>
+      </svg>
+    </button>
+  </div>
+
+  <footer class="gallery-footer">
+    <div class="gallery-shell">
+      <p>Galería de Celeiros · Contenido gestionado directamente por este HTML.</p>
+    </div>
+  </footer>
+
+  <script>
+    (() => {
+      'use strict';
+
+      const search = document.getElementById('photo-search');
+      const filters = [...document.querySelectorAll('[data-filter]')];
+      const sections = [...document.querySelectorAll('[data-section]')];
+      const empty = document.getElementById('empty-state');
+      let category = 'all';
+
+      function normalize(value) {
+        return String(value)
+          .toLocaleLowerCase('es')
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '');
+      }
+
+      function updateResults() {
+        const value = search.value.trim();
+        const terms = normalize(value).split(/\s+/).filter(Boolean);
+        let visibleCount = 0;
+
+        for (const section of sections) {
+          let sectionCount = 0;
+
+          for (const card of section.querySelectorAll('.photo-card')) {
+            const matchesCategory = category === 'all' || card.dataset.category === category;
+            const searchable = normalize(card.dataset.search || '');
+            const matchesSearch = terms.every(term => searchable.includes(term));
+            card.hidden = !(matchesCategory && matchesSearch);
+            if (!card.hidden) sectionCount++;
+          }
+
+          section.hidden = sectionCount === 0;
+          visibleCount += sectionCount;
+        }
+
+        empty.hidden = visibleCount !== 0;
+      }
+
+      search.addEventListener('input', updateResults);
+
+      filters.forEach(button => {
+        button.addEventListener('click', () => {
+          category = button.dataset.filter;
+          filters.forEach(filter => {
+            filter.setAttribute('aria-pressed', String(filter === button));
+          });
+          updateResults();
+        });
+      });
+
+      // Evita que una imagen inexistente deje un hueco visual desagradable.
+      /* Visor de imágenes ampliadas, sin librerías externas. */
+      const galleryFigures = [...document.querySelectorAll('.photo-card')];
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImage = document.getElementById('lightbox-image');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxClose = document.getElementById('lightbox-close');
+      const lightboxPrev = document.getElementById('lightbox-prev');
+      const lightboxNext = document.getElementById('lightbox-next');
+      let activeImage = 0;
+      let returnFocus = null;
+
+      function showImage(index) {
+        if (!galleryFigures.length) return;
+
+        activeImage = (index + galleryFigures.length) % galleryFigures.length;
+
+        const figure = galleryFigures[activeImage];
+        const source = figure.querySelector('img');
+        if (!source) return;
+
+        lightboxImage.src = source.currentSrc || source.src;
+        lightboxImage.alt = source.alt || '';
+        lightboxCaption.textContent =
+          figure.querySelector('figcaption')?.textContent.trim() || '';
+      }
+
+      function openLightbox(index, button) {
+        returnFocus = button;
+        showImage(index);
+        lightbox.hidden = false;
+        document.body.style.overflow = 'hidden';
+        lightboxClose.focus();
+      }
+
+      function closeLightbox() {
+        lightbox.hidden = true;
+        document.body.style.overflow = '';
+        lightboxImage.removeAttribute('src');
+        if (returnFocus) returnFocus.focus();
+      }
+
+      galleryFigures.forEach((figure, index) => {
+        const button = figure.querySelector('.photo-button');
+        if (!button) return;
+        button.addEventListener('click', () => openLightbox(index, button));
+      });
+
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightboxPrev.addEventListener('click', () => showImage(activeImage - 1));
+      lightboxNext.addEventListener('click', () => showImage(activeImage + 1));
+
+      lightbox.addEventListener('click', event => {
+        if (event.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', event => {
+        if (lightbox.hidden) return;
+        if (event.key === 'Escape') closeLightbox();
+        else if (event.key === 'ArrowLeft') {
+          event.preventDefault();
+          showImage(activeImage - 1);
+        } else if (event.key === 'ArrowRight') {
+          event.preventDefault();
+          showImage(activeImage + 1);
+        }
+      });
+
+      document.querySelectorAll('.photo-card img').forEach(img => {
+        img.addEventListener('error', () => {
+          img.classList.add('image-missing');
+          img.alt = 'Imagen pendiente de añadir: ' + img.src.split('/').pop();
+          img.src = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+              <rect width="800" height="600" fill="#e9ede8"/>
+              <text x="400" y="280" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="28" fill="#66716a">Imagen no encontrada</text>
+              <text x="400" y="325" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="18" fill="#66716a">Si el error persiste, póngase en contacto</text>
+            </svg>
+          `);
+        }, { once: true });
+      });
+
+      updateResults();
+    })();
+  </script>
+</body>
+</html>
