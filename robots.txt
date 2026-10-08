@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://lucasmaneirodelatm-dot.github.io/celeiros/sitemap.xml
