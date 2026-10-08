@@ -1,0 +1,1291 @@
+<!doctype html>
+<html lang="gl">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta
+    name="description"
+    content="Parques infantiles de Celeiros."
+  >
+
+  <title>Parques Infantiles · Celeiros</title>
+
+  <!--
+    Este CSS personalizado ya importa base.css.
+    Para cambiar todo el diseño:
+      estilo-natural.css
+      estilo-editorial.css
+      estilo-institucional.css
+  -->
+  <link rel="stylesheet" href="css/estilo-natural.css">
+
+
+  <style>
+
+    .content-image {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      background: var(--surface-2);
+    }
+
+    .content-card {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .content-card .card-body {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .card-actions {
+      margin-top: auto;
+      padding-top: 18px;
+
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 15px;
+    }
+
+    .tag {
+      display: inline-flex;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: .75rem;
+      font-weight: 800;
+    }
+
+
+    /* =========================================
+       VALORACIONES
+       ========================================= */
+
+    .reviews-box {
+      max-width: 850px;
+      margin-inline: auto;
+    }
+
+    .rating-summary {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 25px;
+      margin-bottom: 35px;
+    }
+
+    .rating-average {
+      padding: 25px;
+      text-align: center;
+      border-radius: var(--radius);
+      background: var(--accent);
+      color: var(--accent-contrast);
+    }
+
+    .rating-number {
+      display: block;
+      font-size: 3.4rem;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .rating-stars {
+      color: #e7b84b;
+      font-size: 1.4rem;
+      letter-spacing: 2px;
+      margin: 8px 0;
+    }
+
+    .review-form {
+      padding: 25px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 30px;
+    }
+
+    .review-form label {
+      display: block;
+      margin-bottom: 17px;
+      font-weight: 800;
+    }
+
+    .review-form input[type="text"],
+    .review-form textarea {
+      width: 100%;
+      margin-top: 7px;
+      padding: 12px 13px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--bg);
+      color: var(--text);
+      font: inherit;
+    }
+
+    .review-form textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+
+    .star-picker {
+      display: flex;
+      gap: 4px;
+      direction: ltr;
+    }
+
+    .star-picker input {
+      position: absolute;
+      opacity: 0;
+    }
+
+    .star-picker label {
+      margin: 0;
+      color: #c5c5c5;
+      font-size: 2rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .star-picker label:hover,
+    .star-picker label:hover ~ label,
+    .star-picker input:checked ~ label {
+      color: #e7b84b;
+    }
+
+    .review-list {
+      display: grid;
+      gap: 15px;
+    }
+
+    .review {
+      padding: 20px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .review-name {
+      font-weight: 900;
+    }
+
+    .review-date {
+      color: var(--muted);
+      font-size: .8rem;
+    }
+
+    .review-stars-display {
+      margin: 5px 0 8px;
+      color: #e7b84b;
+      letter-spacing: 1px;
+    }
+
+    .review p {
+      margin: 0;
+    }
+
+    .review-message {
+      min-height: 25px;
+      margin-top: 12px;
+      font-weight: 700;
+    }
+
+    .hp {
+      position: absolute !important;
+      left: -10000px !important;
+      width: 1px !important;
+      height: 1px !important;
+      opacity: 0 !important;
+    }
+
+    @media (max-width: 700px) {
+      .rating-summary {
+        grid-template-columns: 1fr;
+      }
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- CABECERA -->
+
+  <header class="site-header">
+
+    <div class="container header-inner">
+
+      <a
+        class="brand"
+        href="index.html"
+      >
+
+        <span class="brand-mark">
+          C
+        </span>
+
+        <span class="brand-text">
+
+          <strong>
+            Celeiros
+          </strong>
+
+          <small>
+            Ponteareas · Pontevedra
+          </small>
+
+        </span>
+
+      </a>
+
+
+      <nav
+        class="site-nav"
+        aria-label="Navegación"
+      >
+
+        <a href="index.html">
+          Inicio
+        </a>
+
+        <a
+          href="parques-infantiles.html"
+          aria-current="page"
+        >
+          Parques
+        </a>
+
+        <a href="teleclub.html">
+          Teleclub
+        </a>
+
+        <a href="carballeira-dance.html">
+          Dance
+        </a>
+
+        <a href="carballeira-rock.html">
+          Rock
+        </a>
+
+        <a href="galeria.html">
+          Galería
+        </a>
+
+        <a href="contacto.html">
+          Contacto
+        </a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+  <main>
+
+
+    <!-- =========================================
+         PORTADA
+         ========================================= -->
+
+    <section class="section-intro">
+
+      <div class="container hero-grid">
+
+        <div class="hero-copy">
+
+          <p class="eyebrow">
+            Espacios
+          </p>
+
+          <h1>
+            Parques infantiles
+          </h1>
+
+          <p class="hero-lead">
+            Juegos, espacios verdes y lugares para disfrutar
+            en familia.
+          </p>
+
+          <p>
+            Esta página está preparada para añadir tantos
+            parques como necesites sin tener que modificar
+            la estructura general.
+          </p>
+
+          <div class="button-row">
+
+            <a
+              class="button button-primary"
+              href="#parques"
+            >
+              Ver parques
+            </a>
+
+            <a
+              class="button button-secondary"
+              href="#valoraciones"
+            >
+              Valoraciones
+            </a>
+
+          </div>
+
+        </div>
+
+
+        <div class="hero-image">
+
+          <!--
+            CAMBIA ESTA IMAGEN POR LA REAL
+          -->
+
+          <img
+            src="img/parques/parques-portada.jpg"
+            alt="Parque infantil de Celeiros"
+          >
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================================
+         ELEMENTOS
+         ========================================= -->
+
+    <section
+      id="parques"
+      class="section section-accent"
+    >
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <div>
+
+            <p class="eyebrow">
+              Elementos
+            </p>
+
+            <h2>
+              Espacios
+            </h2>
+
+          </div>
+
+          <p class="section-intro-text">
+            Cada tarjeta puede representar un parque,
+            una zona, una instalación o cualquier otro
+            elemento.
+          </p>
+
+        </div>
+
+
+        <div class="card-grid card-grid-3">
+
+
+          <!-- PARQUE 1 -->
+
+          <article class="card content-card">
+
+            <img
+              class="content-image"
+              src="img/parques/parque-01.jpg"
+              alt="Parque infantil 1"
+              loading="lazy"
+            >
+
+            <div class="card-body">
+
+              <p class="card-kicker">
+                Parque 01
+              </p>
+
+              <h3>
+                Parque principal
+              </h3>
+
+              <p>
+                Texto descriptivo del primer parque.
+                Puedes indicar aquí su ubicación,
+                características y cualquier información útil.
+              </p>
+
+              <div class="tags">
+
+                <span class="tag">
+                  Juegos
+                </span>
+
+                <span class="tag">
+                  Familias
+                </span>
+
+                <span class="tag">
+                  Exterior
+                </span>
+
+              </div>
+
+              <div class="card-actions">
+
+                <a
+                  class="button button-primary"
+                  href="parque-01.html"
+                >
+                  Ver detalle
+                </a>
+
+              </div>
+
+            </div>
+
+          </article>
+
+
+          <!-- PARQUE 2 -->
+
+          <article class="card content-card">
+
+            <img
+              class="content-image"
+              src="img/parques/parque-02.jpg"
+              alt="Parque infantil 2"
+              loading="lazy"
+            >
+
+            <div class="card-body">
+
+              <p class="card-kicker">
+                Parque 02
+              </p>
+
+              <h3>
+                Zona de juegos
+              </h3>
+
+              <p>
+                Segunda ficha. Puedes cambiar el título,
+                el texto, las etiquetas y el enlace.
+              </p>
+
+              <div class="tags">
+
+                <span class="tag">
+                  Juegos
+                </span>
+
+                <span class="tag">
+                  Ocio
+                </span>
+
+              </div>
+
+              <div class="card-actions">
+
+                <a
+                  class="button button-primary"
+                  href="parque-02.html"
+                >
+                  Ver detalle
+                </a>
+
+              </div>
+
+            </div>
+
+          </article>
+
+
+          <!-- PARQUE 3 -->
+
+          <article class="card content-card">
+
+            <img
+              class="content-image"
+              src="img/parques/parque-03.jpg"
+              alt="Parque infantil 3"
+              loading="lazy"
+            >
+
+            <div class="card-body">
+
+              <p class="card-kicker">
+                Parque 03
+              </p>
+
+              <h3>
+                Área familiar
+              </h3>
+
+              <p>
+                Otra ficha preparada para incorporar
+                información, fotografías y enlaces.
+              </p>
+
+              <div class="tags">
+
+                <span class="tag">
+                  Familiar
+                </span>
+
+                <span class="tag">
+                  Naturaleza
+                </span>
+
+              </div>
+
+              <div class="card-actions">
+
+                <a
+                  class="button button-primary"
+                  href="parque-03.html"
+                >
+                  Ver detalle
+                </a>
+
+              </div>
+
+            </div>
+
+          </article>
+
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================================
+         GALERÍA
+         ========================================= -->
+
+    <section class="section">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <div>
+
+            <p class="eyebrow">
+              Imágenes
+            </p>
+
+            <h2>
+              Galería
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        <div class="gallery-grid">
+
+          <figure class="gallery-item gallery-large">
+
+            <img
+              src="img/parques/parque-01.jpg"
+              alt="Parque infantil"
+            >
+
+            <figcaption>
+              Parque principal
+            </figcaption>
+
+          </figure>
+
+
+          <figure class="gallery-item">
+
+            <img
+              src="img/parques/parque-02.jpg"
+              alt="Zona de juegos"
+            >
+
+            <figcaption>
+              Zona de juegos
+            </figcaption>
+
+          </figure>
+
+
+          <figure class="gallery-item">
+
+            <img
+              src="img/parques/parque-03.jpg"
+              alt="Área familiar"
+            >
+
+            <figcaption>
+              Área familiar
+            </figcaption>
+
+          </figure>
+
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================================
+         VALORACIONES
+         ========================================= -->
+
+    <section
+      id="valoraciones"
+      class="section section-accent"
+    >
+
+      <div class="container reviews-box">
+
+        <div class="section-heading">
+
+          <div>
+
+            <p class="eyebrow">
+              Opiniones
+            </p>
+
+            <h2>
+              Valoraciones
+            </h2>
+
+          </div>
+
+          <p class="section-intro-text">
+            Puedes valorar esta página o dejar un comentario.
+          </p>
+
+        </div>
+
+
+        <div class="rating-summary">
+
+          <div class="rating-average">
+
+            <span
+              id="averageNumber"
+              class="rating-number"
+            >
+              —
+            </span>
+
+            <div
+              id="averageStars"
+              class="rating-stars"
+            >
+              ☆☆☆☆☆
+            </div>
+
+            <small>
+              <span id="ratingCount">0</span>
+              valoraciones
+            </small>
+
+          </div>
+
+
+          <div>
+
+            <h3>
+              Opiniones
+            </h3>
+
+            <p>
+              La valoración es opcional. También puedes escribir
+              solamente un comentario.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- FORMULARIO -->
+
+        <form
+          id="reviewForm"
+          class="review-form"
+        >
+
+          <label>
+
+            Nombre
+
+            <input
+              name="name"
+              type="text"
+              maxlength="80"
+              required
+              placeholder="Tu nombre"
+            >
+
+          </label>
+
+
+          <label>
+
+            Valoración
+
+            <div class="star-picker">
+
+              <input
+                type="radio"
+                id="park-star-1"
+                name="rating"
+                value="1"
+              >
+
+              <label for="park-star-1">
+                ★
+              </label>
+
+
+              <input
+                type="radio"
+                id="park-star-2"
+                name="rating"
+                value="2"
+              >
+
+              <label for="park-star-2">
+                ★
+              </label>
+
+
+              <input
+                type="radio"
+                id="park-star-3"
+                name="rating"
+                value="3"
+              >
+
+              <label for="park-star-3">
+                ★
+              </label>
+
+
+              <input
+                type="radio"
+                id="park-star-4"
+                name="rating"
+                value="4"
+              >
+
+              <label for="park-star-4">
+                ★
+              </label>
+
+
+              <input
+                type="radio"
+                id="park-star-5"
+                name="rating"
+                value="5"
+              >
+
+              <label for="park-star-5">
+                ★
+              </label>
+
+            </div>
+
+          </label>
+
+
+          <label>
+
+            Comentario
+
+            <textarea
+              name="comment"
+              maxlength="1500"
+              placeholder="Escribe tu opinión..."
+            ></textarea>
+
+          </label>
+
+
+          <!-- ANTISPAM -->
+
+          <label class="hp">
+
+            Website
+
+            <input
+              name="website"
+              type="text"
+              tabindex="-1"
+              autocomplete="off"
+            >
+
+          </label>
+
+
+          <button
+            class="button button-primary"
+            type="submit"
+            id="reviewSubmit"
+          >
+            Publicar valoración
+          </button>
+
+
+          <div
+            id="reviewMessage"
+            class="review-message"
+            aria-live="polite"
+          ></div>
+
+        </form>
+
+
+        <!-- LISTADO -->
+
+        <div
+          id="reviewList"
+          class="review-list"
+        >
+
+          <div class="card">
+            <div class="card-body">
+              Cargando opiniones...
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+  </main>
+
+
+  <!-- PIE -->
+
+  <footer class="site-footer">
+
+    <div class="container footer-grid">
+
+      <div>
+        <strong>Celeiros</strong>
+        <p>
+          Parques Infantiles
+        </p>
+      </div>
+
+      <div>
+
+        <strong>
+          Secciones
+        </strong>
+
+        <nav>
+
+          <a href="index.html">
+            Inicio
+          </a>
+
+          <a href="teleclub.html">
+            Teleclub
+          </a>
+
+          <a href="galeria.html">
+            Galería
+          </a>
+
+        </nav>
+
+      </div>
+
+      <div>
+
+        <strong>
+          Contacto
+        </strong>
+
+        <nav>
+
+          <a href="contacto.html">
+            Contactar
+          </a>
+
+        </nav>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  <!-- =======================================================
+       JAVASCRIPT SOLO PARA VALORACIONES
+       ======================================================= -->
+
+  <script>
+
+    const REVIEWS_API =
+      "https://celeiros-web.lucasmaneirodelatm.workers.dev";
+
+    const PAGE_ID =
+      "parques";
+
+
+    const form =
+      document.getElementById("reviewForm");
+
+    const list =
+      document.getElementById("reviewList");
+
+    const submit =
+      document.getElementById("reviewSubmit");
+
+    const message =
+      document.getElementById("reviewMessage");
+
+
+    function stars(value) {
+
+      const rating =
+        Math.round(
+          Number(value) || 0
+        );
+
+      let result = "";
+
+      for (
+        let i = 1;
+        i <= 5;
+        i++
+      ) {
+
+        result +=
+          i <= rating
+            ? "★"
+            : "☆";
+
+      }
+
+      return result;
+
+    }
+
+
+    async function loadReviews() {
+
+      try {
+
+        const response =
+          await fetch(
+            REVIEWS_API +
+            "/api/reviews?page=" +
+            encodeURIComponent(PAGE_ID)
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !data.ok
+        ) {
+          throw new Error();
+        }
+
+
+        const average =
+          data.stats.averageRating;
+
+
+        document.getElementById(
+          "ratingCount"
+        ).textContent =
+          data.stats.totalRatings;
+
+
+        if (average !== null) {
+
+          document.getElementById(
+            "averageNumber"
+          ).textContent =
+            Number(average).toFixed(1);
+
+
+          document.getElementById(
+            "averageStars"
+          ).textContent =
+            stars(average);
+
+        }
+
+
+        list.innerHTML = "";
+
+
+        if (!data.reviews.length) {
+
+          list.innerHTML =
+            '<div class="card">' +
+            '<div class="card-body">' +
+            'Todavía no hay opiniones.' +
+            '</div>' +
+            '</div>';
+
+          return;
+
+        }
+
+
+        data.reviews.forEach(
+          review => {
+
+            const article =
+              document.createElement(
+                "article"
+              );
+
+            article.className =
+              "review";
+
+
+            const name =
+              document.createElement(
+                "div"
+              );
+
+            name.className =
+              "review-name";
+
+            name.textContent =
+              review.name;
+
+
+            article.appendChild(name);
+
+
+            if (
+              review.date
+            ) {
+
+              const date =
+                document.createElement(
+                  "div"
+                );
+
+              date.className =
+                "review-date";
+
+              date.textContent =
+                review.date;
+
+              article.appendChild(date);
+
+            }
+
+
+            if (
+              review.rating
+            ) {
+
+              const rating =
+                document.createElement(
+                  "div"
+                );
+
+              rating.className =
+                "review-stars-display";
+
+              rating.textContent =
+                stars(review.rating);
+
+              article.appendChild(
+                rating
+              );
+
+            }
+
+
+            if (
+              review.comment
+            ) {
+
+              const text =
+                document.createElement(
+                  "p"
+                );
+
+              text.textContent =
+                review.comment;
+
+              article.appendChild(text);
+
+            }
+
+
+            list.appendChild(article);
+
+          }
+        );
+
+
+      } catch {
+
+        list.innerHTML =
+          '<div class="card">' +
+          '<div class="card-body">' +
+          'No se pudieron cargar las opiniones.' +
+          '</div>' +
+          '</div>';
+
+      }
+
+    }
+
+
+    form.addEventListener(
+      "submit",
+      async event => {
+
+        event.preventDefault();
+
+
+        submit.disabled =
+          true;
+
+        message.textContent =
+          "Publicando...";
+
+
+        const rating =
+          form.querySelector(
+            'input[name="rating"]:checked'
+          );
+
+
+        const payload = {
+
+          page: PAGE_ID,
+
+          name:
+            form.elements.name.value.trim(),
+
+          rating:
+            rating
+              ? Number(rating.value)
+              : null,
+
+          comment:
+            form.elements.comment.value.trim(),
+
+          website:
+            form.elements.website.value.trim()
+
+        };
+
+
+        try {
+
+          const response =
+            await fetch(
+              REVIEWS_API +
+              "/api/reviews",
+              {
+
+                method: "POST",
+
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+
+                body:
+                  JSON.stringify(
+                    payload
+                  )
+
+              }
+            );
+
+
+          const data =
+            await response.json();
+
+
+          if (
+            !response.ok ||
+            !data.ok
+          ) {
+
+            throw new Error(
+              data.error ||
+              "No se pudo publicar."
+            );
+
+          }
+
+
+          form.reset();
+
+          message.textContent =
+            "Valoración publicada correctamente.";
+
+          await loadReviews();
+
+
+        } catch (error) {
+
+          message.textContent =
+            error.message ||
+            "No se pudo publicar.";
+
+        } finally {
+
+          submit.disabled =
+            false;
+
+        }
+
+      }
+    );
+
+
+    loadReviews();
+
+  </script>
+
+</body>
+</html>
