@@ -1,0 +1,1080 @@
+<!doctype html>
+<html lang="gl">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta
+    name="description"
+    content="Contacto de Celeiros. Envía una mensaxe, información, fotografías, recuerdos ou propostas."
+  >
+
+  <title>Contacto · Celeiros</title>
+
+
+  <!-- =========================================================
+       CSS BASE
+       ========================================================= -->
+
+  <link rel="stylesheet" href="css/base.css">
+
+
+  <!-- =========================================================
+       CSS PERSONALIZADO
+       =========================================================
+
+       Cambia este archivo por la variante que estés utilizando:
+
+       css/estilo-natural.css
+       css/estilo-editorial.css
+       css/estilo-institucional.css
+
+       El HTML no depende de una de ellas concretamente.
+       ========================================================= -->
+
+  <link rel="stylesheet" href="css/estilo-natural.css">
+
+
+  <!-- =========================================================
+       PEQUEÑOS AJUSTES EXCLUSIVOS DE ESTA PÁGINA
+       =========================================================
+
+       No definen el diseño general.
+       Solo completan elementos que necesita el formulario.
+       ========================================================= -->
+
+  <style>
+
+    .contact-page {
+      min-height: 70vh;
+    }
+
+    .contact-layout {
+      display: grid;
+      grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+      gap: 60px;
+      align-items: start;
+    }
+
+    .contact-intro {
+      max-width: 650px;
+    }
+
+    .contact-intro p {
+      color: var(--muted);
+    }
+
+    .contact-info {
+      display: grid;
+      gap: 14px;
+      margin-top: 30px;
+    }
+
+    .contact-info-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 13px;
+      align-items: center;
+    }
+
+    .contact-info-icon {
+      width: 44px;
+      height: 44px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 12px;
+
+      background: var(--soft);
+      color: var(--accent);
+
+      font-weight: 900;
+      font-size: 1.1rem;
+    }
+
+    .contact-info-item strong,
+    .contact-info-item small {
+      display: block;
+    }
+
+    .contact-info-item small {
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+
+    /* =====================================================
+       FORMULARIO
+       ===================================================== */
+
+    .contact-form {
+      padding: 30px;
+
+      border: 1px solid var(--line);
+      border-radius: 22px;
+
+      background: var(--surface);
+
+      box-shadow: var(--shadow);
+    }
+
+    .contact-form-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+
+      gap: 20px;
+
+      margin-bottom: 25px;
+    }
+
+    .contact-form-header strong {
+      font-size: .8rem;
+      letter-spacing: .08em;
+    }
+
+    .contact-form-header small {
+      color: var(--muted);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .contact-form label {
+      display: block;
+      margin-bottom: 17px;
+    }
+
+    .contact-form label > span {
+      display: block;
+      margin-bottom: 7px;
+
+      font-size: .86rem;
+      font-weight: 850;
+    }
+
+    .contact-form input[type="text"],
+    .contact-form input[type="email"],
+    .contact-form textarea {
+      width: 100%;
+
+      padding: 13px 14px;
+
+      border: 1px solid var(--line);
+      border-radius: 11px;
+
+      background: var(--bg);
+      color: var(--text);
+
+      font: inherit;
+
+      outline: none;
+    }
+
+    .contact-form textarea {
+      min-height: 180px;
+      resize: vertical;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: var(--accent);
+
+      box-shadow:
+        0 0 0 3px var(--soft);
+    }
+
+
+    /* =====================================================
+       CONSENTIMIENTO
+       ===================================================== */
+
+    .consent-check {
+      display: grid !important;
+      grid-template-columns: auto 1fr;
+
+      gap: 10px;
+
+      align-items: start;
+    }
+
+    .consent-check input {
+      margin-top: 4px;
+    }
+
+
+    /* =====================================================
+       HONEYPOT
+       ===================================================== */
+
+    .hp-field {
+      position: absolute !important;
+
+      left: -10000px !important;
+
+      width: 1px !important;
+      height: 1px !important;
+
+      overflow: hidden !important;
+    }
+
+
+    /* =====================================================
+       BOTÓN + ESTADO
+       ===================================================== */
+
+    .form-footer {
+      display: flex;
+
+      align-items: center;
+      flex-wrap: wrap;
+
+      gap: 15px;
+
+      margin-top: 6px;
+    }
+
+    .form-status {
+      min-height: 28px;
+
+      color: var(--muted);
+
+      font-size: .88rem;
+      font-weight: 700;
+    }
+
+    .form-status.success {
+      color: #267246;
+    }
+
+    .form-status.error {
+      color: #a13a30;
+    }
+
+
+    /* =====================================================
+       ENLACES INFERIORES
+       ===================================================== */
+
+    .contact-links {
+      margin-top: 35px;
+
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 10px;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @media (max-width: 900px) {
+
+      .contact-layout {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+    }
+
+
+    @media (max-width: 650px) {
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-form {
+        padding: 22px;
+      }
+
+      .contact-form-header {
+        display: block;
+      }
+
+      .contact-form-header small {
+        display: block;
+        margin-top: 5px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- =========================================================
+       CABECERA
+       ========================================================= -->
+
+  <header class="site-header">
+
+    <div class="container header-inner">
+
+
+      <a
+        class="brand"
+        href="index.html"
+        aria-label="Volver a Celeiros"
+      >
+
+        <span class="brand-symbol">
+          C
+        </span>
+
+        <span>
+
+          <strong>
+            Celeiros
+          </strong>
+
+          <small>
+            Ponteareas · Pontevedra
+          </small>
+
+        </span>
+
+      </a>
+
+
+      <nav
+        class="site-nav"
+        aria-label="Navegación principal"
+      >
+
+        <a href="index.html">
+          Inicio
+        </a>
+
+        <a href="parques-infantiles.html">
+          Parques
+        </a>
+
+        <a href="teleclub.html">
+          Teleclub
+        </a>
+
+        <a href="carballeira-dance.html">
+          Dance
+        </a>
+
+        <a href="carballeira-rock.html">
+          Rock
+        </a>
+
+        <a href="galeria.html">
+          Galería
+        </a>
+
+        <a
+          href="contacto.html"
+          aria-current="page"
+        >
+          Contacto
+        </a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- =========================================================
+       CONTENIDO
+       ========================================================= -->
+
+  <main class="contact-page">
+
+
+    <section class="section contact-section">
+
+      <div class="container contact-layout">
+
+
+        <!-- ===================================================
+             INFORMACIÓN
+             =================================================== -->
+
+        <div class="contact-intro">
+
+          <p class="eyebrow">
+            Contacto
+          </p>
+
+
+          <h1>
+            Queres poñerte en contacto?
+          </h1>
+
+
+          <p>
+            Podes utilizar este formulario para enviar unha mensaxe,
+            achegar información, fotografías, lembranzas ou propostas
+            relacionadas con Celeiros.
+          </p>
+
+
+          <p>
+            Os datos enviados son recibidos polo sistema privado
+            de xestión da web.
+          </p>
+
+
+          <div class="contact-info">
+
+
+            <div class="contact-info-item">
+
+              <span class="contact-info-icon">
+                ✉
+              </span>
+
+              <span>
+
+                <strong>
+                  Mensaxes
+                </strong>
+
+                <small>
+                  O contido chega directamente ao sistema de contacto.
+                </small>
+
+              </span>
+
+            </div>
+
+
+            <div class="contact-info-item">
+
+              <span class="contact-info-icon">
+                🔒
+              </span>
+
+              <span>
+
+                <strong>
+                  Xestión privada
+                </strong>
+
+                <small>
+                  A información non se mostra publicamente.
+                </small>
+
+              </span>
+
+            </div>
+
+
+            <div class="contact-info-item">
+
+              <span class="contact-info-icon">
+                ✓
+              </span>
+
+              <span>
+
+                <strong>
+                  Participa
+                </strong>
+
+                <small>
+                  Tamén podes enviar fotografías ou información
+                  para futuras seccións da web.
+                </small>
+
+              </span>
+
+            </div>
+
+
+          </div>
+
+
+          <div class="contact-links">
+
+            <a
+              class="button button-primary"
+              href="index.html"
+            >
+              Volver a Celeiros
+            </a>
+
+            <a
+              class="button"
+              href="galeria.html"
+            >
+              Ver galería
+            </a>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- ===================================================
+             FORMULARIO
+             =================================================== -->
+
+        <form
+          id="contactForm"
+          class="contact-form"
+          novalidate
+          autocomplete="on"
+        >
+
+
+          <div class="contact-form-header">
+
+            <strong>
+              FORMULARIO DE CONTACTO
+            </strong>
+
+            <small>
+              * campos obrigatorios
+            </small>
+
+          </div>
+
+
+          <!-- ===============================================
+               NOMBRE + EMAIL
+               =============================================== -->
+
+          <div class="form-grid">
+
+
+            <label>
+
+              <span>
+                Nome *
+              </span>
+
+              <input
+                name="name"
+                type="text"
+                maxlength="100"
+                autocomplete="name"
+                required
+              >
+
+            </label>
+
+
+            <label>
+
+              <span>
+                Correo electrónico *
+              </span>
+
+              <input
+                name="email"
+                type="email"
+                maxlength="160"
+                autocomplete="email"
+                required
+              >
+
+            </label>
+
+
+          </div>
+
+
+          <!-- ===============================================
+               ASUNTO
+               =============================================== -->
+
+          <label>
+
+            <span>
+              Asunto *
+            </span>
+
+            <input
+              name="subject"
+              type="text"
+              maxlength="180"
+              required
+            >
+
+          </label>
+
+
+          <!-- ===============================================
+               MENSAJE
+               =============================================== -->
+
+          <label>
+
+            <span>
+              Descrición *
+            </span>
+
+            <textarea
+              name="message"
+              rows="8"
+              maxlength="5000"
+              required
+            ></textarea>
+
+          </label>
+
+
+          <!-- ===============================================
+               ANTISPAM HONEYPOT
+               =============================================== -->
+
+          <label
+            class="hp-field"
+            aria-hidden="true"
+          >
+
+            <span>
+              Non cubrir
+            </span>
+
+            <input
+              name="website"
+              type="text"
+              tabindex="-1"
+              autocomplete="off"
+            >
+
+          </label>
+
+
+          <!-- ===============================================
+               TIEMPO DE INICIO DEL FORMULARIO
+               =============================================== -->
+
+          <input
+            name="formStartedAt"
+            type="hidden"
+            value=""
+          >
+
+
+          <!-- ===============================================
+               CONSENTIMIENTO
+               =============================================== -->
+
+          <label class="consent-check">
+
+            <input
+              name="consent"
+              type="checkbox"
+              required
+            >
+
+            <span>
+              Confirmo que os datos enviados se utilizarán
+              para responder á mensaxe. *
+            </span>
+
+          </label>
+
+
+          <!-- ===============================================
+               ENVIAR
+               =============================================== -->
+
+          <div class="form-footer">
+
+
+            <button
+              id="submitContact"
+              class="button button-primary"
+              type="submit"
+            >
+              Enviar mensaxe
+            </button>
+
+
+            <div
+              id="contactStatus"
+              class="form-status"
+              role="status"
+              aria-live="polite"
+            ></div>
+
+
+          </div>
+
+
+        </form>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+
+  <!-- =========================================================
+       PIE
+       ========================================================= -->
+
+  <footer class="site-footer">
+
+    <div class="container footer-grid">
+
+
+      <div>
+
+        <div class="footer-brand">
+
+          <span class="brand-mark">
+            C
+          </span>
+
+          <strong>
+            Celeiros
+          </strong>
+
+        </div>
+
+        <p>
+          Ponteareas · Pontevedra
+        </p>
+
+      </div>
+
+
+      <div>
+
+        <strong>
+          Navegación
+        </strong>
+
+        <nav class="footer-nav">
+
+          <a href="index.html">
+            Inicio
+          </a>
+
+          <a href="parques-infantiles.html">
+            Parques
+          </a>
+
+          <a href="teleclub.html">
+            Teleclub
+          </a>
+
+          <a href="galeria.html">
+            Galería
+          </a>
+
+        </nav>
+
+      </div>
+
+
+      <div>
+
+        <strong>
+          Música
+        </strong>
+
+        <nav class="footer-nav">
+
+          <a href="carballeira-dance.html">
+            Carballeira Dance
+          </a>
+
+          <a href="carballeira-rock.html">
+            Carballeira Rock
+          </a>
+
+        </nav>
+
+      </div>
+
+
+    </div>
+
+  </footer>
+
+
+
+  <!-- =========================================================
+       JAVASCRIPT LOCAL
+       =========================================================
+
+       Está dentro del propio HTML.
+       No depende de app.js.
+       No utiliza localStorage.
+       ========================================================= -->
+
+  <script>
+
+    /*
+     * ========================================================
+     * CONFIGURACIÓN DEL WORKER
+     * ========================================================
+     */
+
+    const CONTACT_WORKER =
+      "https://celeiros.lucasmaneirodelatm.workers.dev";
+
+
+    /*
+     * ========================================================
+     * ELEMENTOS
+     * ========================================================
+     */
+
+    const form =
+      document.getElementById("contactForm");
+
+    const status =
+      document.getElementById("contactStatus");
+
+    const submit =
+      document.getElementById("submitContact");
+
+
+    /*
+     * ========================================================
+     * HORA DE INICIO
+     * ========================================================
+
+     * El Worker utiliza este dato para rechazar envíos
+     * realizados demasiado rápido por bots.
+     */
+
+    const startedAt =
+      document.querySelector(
+        'input[name="formStartedAt"]'
+      );
+
+    startedAt.value =
+      String(Date.now());
+
+
+    /*
+     * ========================================================
+     * MOSTRAR ESTADO
+     * ========================================================
+     */
+
+    function showStatus(message, type) {
+
+      status.textContent =
+        message;
+
+      status.className =
+        "form-status" +
+        (type
+          ? " " + type
+          : "");
+
+    }
+
+
+    /*
+     * ========================================================
+     * ENVÍO
+     * ========================================================
+     */
+
+    form.addEventListener(
+      "submit",
+      async function(event) {
+
+        event.preventDefault();
+
+
+        /*
+         * Comprobación HTML
+         */
+
+        if (!form.checkValidity()) {
+
+          form.reportValidity();
+
+          return;
+        }
+
+
+        /*
+         * Recogemos los datos
+         */
+
+        const payload = {
+
+          name:
+            form.elements.name.value.trim(),
+
+          email:
+            form.elements.email.value.trim(),
+
+          subject:
+            form.elements.subject.value.trim(),
+
+          message:
+            form.elements.message.value.trim(),
+
+          website:
+            form.elements.website.value.trim(),
+
+          formStartedAt:
+            Number(
+              form.elements.formStartedAt.value || 0
+            ),
+
+          consent:
+            form.elements.consent.checked
+
+        };
+
+
+        /*
+         * Estado visual
+         */
+
+        submit.disabled =
+          true;
+
+        submit.textContent =
+          "Enviando...";
+
+        showStatus(
+          "",
+          ""
+        );
+
+
+        /*
+         * PETICIÓN AL WORKER
+         */
+
+        try {
+
+          const response =
+            await fetch(
+              CONTACT_WORKER +
+              "/api/contact",
+              {
+
+                method: "POST",
+
+                headers: {
+                  "Content-Type":
+                    "application/json",
+
+                  "Accept":
+                    "application/json"
+                },
+
+                body:
+                  JSON.stringify(payload)
+
+              }
+            );
+
+
+          /*
+           * Intentamos leer JSON
+           */
+
+          let data;
+
+          try {
+
+            data =
+              await response.json();
+
+          } catch {
+
+            data = {};
+
+          }
+
+
+          /*
+           * ERROR
+           */
+
+          if (
+            !response.ok ||
+            !data.ok
+          ) {
+
+            throw new Error(
+              data.error ||
+              "Non se puido enviar a mensaxe."
+            );
+
+          }
+
+
+          /*
+           * ÉXITO
+           */
+
+          form.reset();
+
+
+          /*
+           * Reiniciamos o contador
+           * para un posible segundo envío.
+           */
+
+          startedAt.value =
+            String(Date.now());
+
+
+          showStatus(
+            "Mensaxe enviada correctamente. Grazas por contactar.",
+            "success"
+          );
+
+
+        } catch (error) {
+
+          console.error(
+            "Erro de contacto:",
+            error
+          );
+
+
+          showStatus(
+            error.message ||
+            "Produciuse un erro ao enviar a mensaxe.",
+            "error"
+          );
+
+
+        } finally {
+
+          submit.disabled =
+            false;
+
+          submit.textContent =
+            "Enviar mensaxe";
+
+        }
+
+      }
+    );
+
+  </script>
+
+
+</body>
+</html>
