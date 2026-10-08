@@ -1,0 +1,1180 @@
+<!doctype html>
+<html lang="gl">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Carballeira Dance · Celeiros</title>
+
+  <meta
+    name="description"
+    content="Carballeira Dance de Celeiros."
+  >
+
+  <link
+    rel="stylesheet"
+    href="css/estilo-natural.css"
+  >
+
+
+  <style>
+
+    .edition-image {
+      width: 100%;
+      height: 270px;
+      object-fit: cover;
+      background: var(--surface-2);
+    }
+
+    .edition-card {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .edition-card .card-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .edition-card .card-actions {
+      margin-top: auto;
+      padding-top: 18px;
+    }
+
+
+    .reviews-box {
+      max-width: 850px;
+      margin-inline: auto;
+    }
+
+    .rating-summary {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 25px;
+      margin-bottom: 35px;
+    }
+
+    .rating-average {
+      padding: 25px;
+      border-radius: var(--radius);
+      background: var(--accent);
+      color: var(--accent-contrast);
+      text-align: center;
+    }
+
+    .rating-number {
+      display: block;
+      font-size: 3.3rem;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .rating-stars,
+    .review-stars-display {
+      color: #e7b84b;
+      letter-spacing: 2px;
+    }
+
+    .review-form {
+      padding: 25px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 30px;
+    }
+
+    .review-form label {
+      display: block;
+      margin-bottom: 17px;
+      font-weight: 800;
+    }
+
+    .review-form input[type="text"],
+    .review-form textarea {
+      width: 100%;
+      margin-top: 7px;
+      padding: 12px 13px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--bg);
+      color: var(--text);
+      font: inherit;
+    }
+
+    .review-form textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+
+    .star-picker {
+      display: flex;
+      gap: 5px;
+    }
+
+    .star-picker input {
+      position: absolute;
+      opacity: 0;
+    }
+
+    .star-picker label {
+      margin: 0;
+      font-size: 2rem;
+      line-height: 1;
+      color: #c5c5c5;
+      cursor: pointer;
+    }
+
+    .star-picker label:hover,
+    .star-picker label:hover ~ label,
+    .star-picker input:checked ~ label {
+      color: #e7b84b;
+    }
+
+    .review-list {
+      display: grid;
+      gap: 15px;
+    }
+
+    .review {
+      padding: 20px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .review-name {
+      font-weight: 900;
+    }
+
+    .review-date {
+      color: var(--muted);
+      font-size: .8rem;
+    }
+
+    .review p {
+      margin-bottom: 0;
+    }
+
+    .review-message {
+      min-height: 25px;
+      margin-top: 12px;
+      font-weight: 800;
+    }
+
+    .hp {
+      position: absolute !important;
+      left: -10000px !important;
+    }
+
+    @media (max-width: 700px) {
+      .rating-summary {
+        grid-template-columns: 1fr;
+      }
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<header class="site-header">
+
+  <div class="container header-inner">
+
+    <a
+      class="brand"
+      href="index.html"
+    >
+
+      <span class="brand-mark">
+        C
+      </span>
+
+      <span class="brand-text">
+
+        <strong>
+          Celeiros
+        </strong>
+
+        <small>
+          Ponteareas · Pontevedra
+        </small>
+
+      </span>
+
+    </a>
+
+
+    <nav class="site-nav">
+
+      <a href="index.html">
+        Inicio
+      </a>
+
+      <a href="parques-infantiles.html">
+        Parques
+      </a>
+
+      <a href="teleclub.html">
+        Teleclub
+      </a>
+
+      <a
+        href="carballeira-dance.html"
+        aria-current="page"
+      >
+        Dance
+      </a>
+
+      <a href="carballeira-rock.html">
+        Rock
+      </a>
+
+      <a href="galeria.html">
+        Galería
+      </a>
+
+      <a href="contacto.html">
+        Contacto
+      </a>
+
+    </nav>
+
+  </div>
+
+</header>
+
+
+<main>
+
+
+  <!-- PORTADA -->
+
+  <section class="section-intro">
+
+    <div class="container hero-grid">
+
+      <div class="hero-copy">
+
+        <p class="eyebrow">
+          Música e festa
+        </p>
+
+        <h1>
+          Carballeira Dance
+        </h1>
+
+        <p class="hero-lead">
+          Un espacio para reunir ediciones, carteles,
+          fotografías y recuerdos.
+        </p>
+
+        <p>
+          Cada edición puede convertirse en una tarjeta
+          independiente y enlazar a su propia página.
+        </p>
+
+        <div class="button-row">
+
+          <a
+            class="button button-primary"
+            href="#ediciones"
+          >
+            Ver ediciones
+          </a>
+
+          <a
+            class="button button-secondary"
+            href="#valoraciones"
+          >
+            Valoraciones
+          </a>
+
+        </div>
+
+      </div>
+
+
+      <div class="hero-image">
+
+        <img
+          src="img/dance/dance-portada.jpg"
+          alt="Carballeira Dance"
+        >
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- EDICIONES -->
+
+  <section
+    id="ediciones"
+    class="section section-accent"
+  >
+
+    <div class="container">
+
+      <div class="section-heading">
+
+        <div>
+
+          <p class="eyebrow">
+            Archivo
+          </p>
+
+          <h2>
+            Ediciones
+          </h2>
+
+        </div>
+
+        <p class="section-intro-text">
+          Para añadir una edición nueva, copia una tarjeta
+          y cambia título, texto, imagen y enlace.
+        </p>
+
+      </div>
+
+
+      <div class="card-grid card-grid-3">
+
+
+        <!-- EDICIÓN 1 -->
+
+        <article class="card edition-card">
+
+          <img
+            class="edition-image"
+            src="img/dance/edicion-01.jpg"
+            alt="Carballeira Dance edición 1"
+            loading="lazy"
+          >
+
+          <div class="card-body">
+
+            <p class="card-kicker">
+              Edición 01
+            </p>
+
+            <h3>
+              Primera edición
+            </h3>
+
+            <p>
+              Añade aquí el año, artistas, actividades,
+              ubicación y cualquier otro dato.
+            </p>
+
+            <div class="card-actions">
+
+              <a
+                class="button button-primary"
+                href="carballeira-dance-01.html"
+              >
+                Ver edición
+              </a>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- EDICIÓN 2 -->
+
+        <article class="card edition-card">
+
+          <img
+            class="edition-image"
+            src="img/dance/edicion-02.jpg"
+            alt="Carballeira Dance edición 2"
+            loading="lazy"
+          >
+
+          <div class="card-body">
+
+            <p class="card-kicker">
+              Edición 02
+            </p>
+
+            <h3>
+              Segunda edición
+            </h3>
+
+            <p>
+              Otra edición independiente.
+              Se puede añadir una segunda fotografía,
+              un cartel o un enlace.
+            </p>
+
+            <div class="card-actions">
+
+              <a
+                class="button button-primary"
+                href="carballeira-dance-02.html"
+              >
+                Ver edición
+              </a>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- EDICIÓN 3 -->
+
+        <article class="card edition-card">
+
+          <img
+            class="edition-image"
+            src="img/dance/edicion-03.jpg"
+            alt="Carballeira Dance edición 3"
+            loading="lazy"
+          >
+
+          <div class="card-body">
+
+            <p class="card-kicker">
+              Edición 03
+            </p>
+
+            <h3>
+              Tercera edición
+            </h3>
+
+            <p>
+              Puedes utilizar esta misma estructura
+              para cualquier edición futura.
+            </p>
+
+            <div class="card-actions">
+
+              <a
+                class="button button-primary"
+                href="carballeira-dance-03.html"
+              >
+                Ver edición
+              </a>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- GALERÍA -->
+
+  <section class="section">
+
+    <div class="container">
+
+      <div class="section-heading">
+
+        <div>
+
+          <p class="eyebrow">
+            Fotografías
+          </p>
+
+          <h2>
+            Recuerdos
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <div class="gallery-grid">
+
+        <figure class="gallery-item gallery-large">
+
+          <img
+            src="img/dance/edicion-01.jpg"
+            alt="Carballeira Dance"
+          >
+
+          <figcaption>
+            Carballeira Dance
+          </figcaption>
+
+        </figure>
+
+
+        <figure class="gallery-item">
+
+          <img
+            src="img/dance/edicion-02.jpg"
+            alt="Edición de Carballeira Dance"
+          >
+
+          <figcaption>
+            Edición
+          </figcaption>
+
+        </figure>
+
+
+        <figure class="gallery-item">
+
+          <img
+            src="img/dance/edicion-03.jpg"
+            alt="Recuerdo de Carballeira Dance"
+          >
+
+          <figcaption>
+            Recuerdo
+          </figcaption>
+
+        </figure>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- INFORMACIÓN -->
+
+  <section class="section section-accent">
+
+    <div class="container split">
+
+      <div>
+
+        <p class="eyebrow">
+          Contenido
+        </p>
+
+        <h2>
+          ¿Qué puede tener cada edición?
+        </h2>
+
+      </div>
+
+
+      <div class="prose">
+
+        <p>
+          Año, cartel, artistas, horarios, fotografías,
+          vídeos, descripción, enlaces, ubicación y cualquier
+          otro contenido que quieras conservar.
+        </p>
+
+        <p>
+          No es necesario que todas las ediciones tengan
+          exactamente los mismos elementos.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- VALORACIONES -->
+
+  <section
+    id="valoraciones"
+    class="section"
+  >
+
+    <div class="container reviews-box">
+
+      <div class="section-heading">
+
+        <div>
+
+          <p class="eyebrow">
+            Opiniones
+          </p>
+
+          <h2>
+            ¿Qué te parece Carballeira Dance?
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <div class="rating-summary">
+
+        <div class="rating-average">
+
+          <span
+            id="averageNumber"
+            class="rating-number"
+          >
+            —
+          </span>
+
+          <div
+            id="averageStars"
+            class="rating-stars"
+          >
+            ☆☆☆☆☆
+          </div>
+
+          <small>
+
+            <span id="ratingCount">
+              0
+            </span>
+
+            valoraciones
+
+          </small>
+
+        </div>
+
+
+        <div>
+
+          <h3>
+            Valoraciones
+          </h3>
+
+          <p>
+            La valoración mediante estrellas es opcional.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <form
+        id="reviewForm"
+        class="review-form"
+      >
+
+        <label>
+
+          Nombre
+
+          <input
+            name="name"
+            type="text"
+            maxlength="80"
+            required
+            placeholder="Tu nombre"
+          >
+
+        </label>
+
+
+        <label>
+
+          Valoración
+
+          <div class="star-picker">
+
+            <input
+              type="radio"
+              id="dance-star-1"
+              name="rating"
+              value="1"
+            >
+
+            <label for="dance-star-1">
+              ★
+            </label>
+
+
+            <input
+              type="radio"
+              id="dance-star-2"
+              name="rating"
+              value="2"
+            >
+
+            <label for="dance-star-2">
+              ★
+            </label>
+
+
+            <input
+              type="radio"
+              id="dance-star-3"
+              name="rating"
+              value="3"
+            >
+
+            <label for="dance-star-3">
+              ★
+            </label>
+
+
+            <input
+              type="radio"
+              id="dance-star-4"
+              name="rating"
+              value="4"
+            >
+
+            <label for="dance-star-4">
+              ★
+            </label>
+
+
+            <input
+              type="radio"
+              id="dance-star-5"
+              name="rating"
+              value="5"
+            >
+
+            <label for="dance-star-5">
+              ★
+            </label>
+
+          </div>
+
+        </label>
+
+
+        <label>
+
+          Comentario
+
+          <textarea
+            name="comment"
+            maxlength="1500"
+            placeholder="Escribe tu opinión..."
+          ></textarea>
+
+        </label>
+
+
+        <label class="hp">
+
+          Website
+
+          <input
+            name="website"
+            tabindex="-1"
+            autocomplete="off"
+          >
+
+        </label>
+
+
+        <button
+          class="button button-primary"
+          type="submit"
+          id="reviewSubmit"
+        >
+          Publicar valoración
+        </button>
+
+
+        <div
+          id="reviewMessage"
+          class="review-message"
+          aria-live="polite"
+        ></div>
+
+      </form>
+
+
+      <div
+        id="reviewList"
+        class="review-list"
+      ></div>
+
+    </div>
+
+  </section>
+
+
+</main>
+
+
+<footer class="site-footer">
+
+  <div class="container footer-grid">
+
+    <div>
+
+      <strong>
+        Celeiros
+      </strong>
+
+      <p>
+        Carballeira Dance
+      </p>
+
+    </div>
+
+    <div>
+
+      <strong>
+        Secciones
+      </strong>
+
+      <nav>
+
+        <a href="index.html">
+          Inicio
+        </a>
+
+        <a href="carballeira-rock.html">
+          Rock
+        </a>
+
+        <a href="galeria.html">
+          Galería
+        </a>
+
+      </nav>
+
+    </div>
+
+    <div>
+
+      <strong>
+        Contacto
+      </strong>
+
+      <nav>
+
+        <a href="contacto.html">
+          Contactar
+        </a>
+
+      </nav>
+
+    </div>
+
+  </div>
+
+</footer>
+
+
+<script>
+
+const REVIEWS_API =
+  "https://celeiros-web.lucasmaneirodelatm.workers.dev";
+
+const PAGE_ID =
+  "carballeira-dance";
+
+
+const form =
+  document.getElementById("reviewForm");
+
+const list =
+  document.getElementById("reviewList");
+
+const submit =
+  document.getElementById("reviewSubmit");
+
+const message =
+  document.getElementById("reviewMessage");
+
+
+function stars(value) {
+
+  const rating =
+    Math.round(Number(value) || 0);
+
+  let output = "";
+
+  for (
+    let i = 1;
+    i <= 5;
+    i++
+  ) {
+
+    output +=
+      i <= rating
+        ? "★"
+        : "☆";
+
+  }
+
+  return output;
+
+}
+
+
+async function loadReviews() {
+
+  try {
+
+    const response =
+      await fetch(
+        REVIEWS_API +
+        "/api/reviews?page=" +
+        encodeURIComponent(PAGE_ID)
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if (
+      !response.ok ||
+      !data.ok
+    ) {
+      throw new Error();
+    }
+
+
+    document.getElementById(
+      "ratingCount"
+    ).textContent =
+      data.stats.totalRatings;
+
+
+    if (
+      data.stats.averageRating !== null
+    ) {
+
+      document.getElementById(
+        "averageNumber"
+      ).textContent =
+        Number(
+          data.stats.averageRating
+        ).toFixed(1);
+
+
+      document.getElementById(
+        "averageStars"
+      ).textContent =
+        stars(
+          data.stats.averageRating
+        );
+
+    }
+
+
+    list.innerHTML = "";
+
+
+    data.reviews.forEach(
+      review => {
+
+        const article =
+          document.createElement(
+            "article"
+          );
+
+        article.className =
+          "review";
+
+
+        const name =
+          document.createElement(
+            "div"
+          );
+
+        name.className =
+          "review-name";
+
+        name.textContent =
+          review.name;
+
+        article.appendChild(name);
+
+
+        if (review.date) {
+
+          const date =
+            document.createElement(
+              "div"
+            );
+
+          date.className =
+            "review-date";
+
+          date.textContent =
+            review.date;
+
+          article.appendChild(date);
+
+        }
+
+
+        if (review.rating) {
+
+          const starsElement =
+            document.createElement(
+              "div"
+            );
+
+          starsElement.className =
+            "review-stars-display";
+
+          starsElement.textContent =
+            stars(review.rating);
+
+          article.appendChild(
+            starsElement
+          );
+
+        }
+
+
+        if (review.comment) {
+
+          const comment =
+            document.createElement(
+              "p"
+            );
+
+          comment.textContent =
+            review.comment;
+
+          article.appendChild(comment);
+
+        }
+
+
+        list.appendChild(article);
+
+      }
+    );
+
+
+  } catch {
+
+    list.innerHTML =
+      "<p>No se pudieron cargar las valoraciones.</p>";
+
+  }
+
+}
+
+
+form.addEventListener(
+  "submit",
+  async event => {
+
+    event.preventDefault();
+
+    submit.disabled = true;
+
+    message.textContent =
+      "Publicando...";
+
+
+    const selected =
+      form.querySelector(
+        'input[name="rating"]:checked'
+      );
+
+
+    try {
+
+      const response =
+        await fetch(
+          REVIEWS_API +
+          "/api/reviews",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body: JSON.stringify({
+
+              page: PAGE_ID,
+
+              name:
+                form.elements.name.value.trim(),
+
+              rating:
+                selected
+                  ? Number(selected.value)
+                  : null,
+
+              comment:
+                form.elements.comment.value.trim(),
+
+              website:
+                form.elements.website.value.trim()
+
+            })
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        !response.ok ||
+        !data.ok
+      ) {
+
+        throw new Error(
+          data.error ||
+          "No se pudo publicar."
+        );
+
+      }
+
+
+      form.reset();
+
+      message.textContent =
+        "Valoración publicada correctamente.";
+
+      await loadReviews();
+
+
+    } catch (error) {
+
+      message.textContent =
+        error.message ||
+        "No se pudo publicar.";
+
+    } finally {
+
+      submit.disabled =
+        false;
+
+    }
+
+  }
+);
+
+
+loadReviews();
+
+</script>
+
+
+</body>
+</html>
