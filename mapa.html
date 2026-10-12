@@ -246,24 +246,53 @@
       east: -8.4405300
     };
 
-    // API propia en Cloudflare Worker. Sustituye esta URL tras desplegar worker-mapa.js.
-    // No se consulta Overpass directamente desde el navegador porque puede bloquear CORS.
-    const DATA_API = "https://mapa-celeiros-osm.lucasmaneirodelatm.workers.dev";
+    // Instancias públicas de Overpass. Non se inclúen espellos que teñen
+    // respostas 403 coñecidas. Se unha instancia non responde, inténtase a seguinte.
+    const OVERPASS_ENDPOINTS = [
+      "https://overpass-api.de/api/interpreter",
+      "https://lz4.overpass-api.de/api/interpreter",
+      "https://overpass.kumi.systems/api/interpreter"
+    ];
+
+    function buildOverpassQuery() {
+      const b = AREA;
+      return `[out:json][timeout:25];(nwr(${b.south},${b.west},${b.north},${b.east}););out meta geom;`;
+    }
 
     async function fetchOnlineElements() {
-      const response = await fetch(DATA_API + "/api/overpass", {
-        method: "GET",
-        headers: { "Accept": "application/json" },
-        cache: "default"
-      });
-      if (!response.ok) {
-        throw new Error("La API del mapa respondió HTTP " + response.status + ". Comprueba la URL y el Worker de Cloudflare.");
+      const query = buildOverpassQuery();
+      let lastError = null;
+
+      for (const endpoint of OVERPASS_ENDPOINTS) {
+        try {
+          // GET cunha consulta curta: é unha petición simple e non precisa
+          // OPTIONS/preflight. Os espellos problemáticos coñecidos non se usan.
+          const response = await fetch(endpoint + "?data=" + encodeURIComponent(query), {
+            method: "GET",
+            headers: { "Accept": "application/json" },
+            cache: "no-store",
+            redirect: "follow"
+          });
+
+          if (!response.ok) {
+            lastError = new Error("Servizo de datos non dispoñible");
+            continue;
+          }
+
+          const data = await response.json();
+          if (!data || !Array.isArray(data.elements)) {
+            lastError = new Error("Resposta de datos non válida");
+            continue;
+          }
+
+          return { data, endpoint };
+        } catch (_) {
+          // Non imprimimos cada fallo de espellos na consola; inténtase outro.
+          lastError = new Error("Non foi posible conectar cos servizos de datos");
+        }
       }
-      const data = await response.json();
-      if (!data || !Array.isArray(data.elements)) {
-        throw new Error("La API del mapa devolvió datos no válidos.");
-      }
-      return { data, endpoint: DATA_API + "/api/overpass" };
+
+      throw lastError || new Error("Datos en liña temporalmente non dispoñibles");
     }
 
     function tagsFromJson(tags) {
