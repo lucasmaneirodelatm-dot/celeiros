@@ -1,90 +1,85 @@
+
 <!doctype html>
 <html lang="gl">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Mapa interactivo de Celeiros con cartografía e elementos consultados en liña desde OpenStreetMap.">
+  <meta name="description" content="Mapa interactivo de Celeiros con fichas locais editables, fotografías e descricións propias.">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <title>Mapa interactivo · Celeiros</title>
-
-  <!-- Mantén o sistema CSS compartido da web. -->
-  <link rel="stylesheet" href="css/base.css">
+  <title>Mapa de Celeiros</title>
   <link rel="stylesheet" href="css/estilo-natural.css">
-
-  <!-- Leaflet: biblioteca para mostrar o mapa e interaccións. -->
-  <link rel="stylesheet"
-        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-        crossorigin="">
-
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
   <style>
     :root {
       --map-ink: var(--text, #24312b);
       --map-muted: var(--muted, #68756e);
-      --map-bg: var(--bg, #f7f6f0);
-      --map-surface: var(--surface, #fff);
+      --map-surface: var(--surface, #fffdf8);
       --map-line: var(--line, #dce2dc);
-      --map-accent: var(--accent, #246346);
+      --map-accent: var(--accent, #356a43);
       --map-shadow: var(--shadow, 0 8px 26px rgba(20,40,30,.09));
       --map-radius: var(--radius, 16px);
     }
     * { box-sizing: border-box; }
-    .map-page { width: min(1520px, calc(100% - 32px)); margin: 0 auto; padding-bottom: 36px; color: var(--map-ink); }
-    .map-intro { padding: clamp(24px, 4.5vw, 50px) 0 20px; }
-    .map-intro h1 { margin: 6px 0 12px; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.05; }
-    .map-intro p { max-width: 950px; color: var(--map-muted); line-height: 1.65; }
-    .map-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 9px; padding: 12px; background: var(--map-surface); border: 1px solid var(--map-line); border-radius: var(--map-radius); box-shadow: var(--map-shadow); margin-bottom: 12px; }
-    .map-button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 40px; padding: 9px 13px; border: 1px solid var(--map-line); border-radius: 10px; background: var(--map-surface); color: var(--map-ink); font: inherit; font-weight: 750; cursor: pointer; text-decoration: none; }
-    .map-button.primary { background: var(--map-accent); color: #fff; border-color: var(--map-accent); }
+    .map-page { width: min(1540px, calc(100% - 32px)); margin: 0 auto; padding: 0 0 36px; color: var(--map-ink); }
+    .map-intro { padding: clamp(25px, 4vw, 48px) 0 20px; }
+    .map-intro h1 { margin: 5px 0 12px; font-size: clamp(2rem, 4.5vw, 3.45rem); line-height: 1.06; }
+    .map-intro p { color: var(--map-muted); line-height: 1.65; max-width: 900px; }
+    .map-toolbar { display: flex; flex-wrap: wrap; gap: 9px; align-items: center; margin: 0 0 12px; }
+    .map-button { display: inline-flex; gap: 7px; align-items: center; justify-content: center; min-height: 41px; padding: 9px 13px; border: 1px solid var(--map-line); border-radius: 10px; background: var(--map-surface); color: var(--map-ink); text-decoration: none; font: inherit; font-weight: 750; cursor: pointer; }
+    .map-button.primary { background: var(--map-accent); border-color: var(--map-accent); color: white; }
     .map-button:disabled { opacity: .55; cursor: not-allowed; }
-    .map-status { padding: 10px 13px; margin-bottom: 12px; border: 1px solid var(--map-line); border-radius: 10px; background: var(--map-surface); color: var(--map-muted); overflow-wrap: anywhere; }
-    .map-status.error { color: #982e26; background: #fff7f5; border-color: #dca69f; }
-    .map-status.success { color: #21643e; background: #f2fbf5; }
-    .stats-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 12px; }
-    .stat-card { background: var(--map-surface); border: 1px solid var(--map-line); border-radius: 12px; padding: 12px 15px; }
-    .stat-card strong { display: block; font-size: 1.45rem; line-height: 1.2; }
-    .stat-card span { display: block; color: var(--map-muted); font-size: .82rem; margin-top: 4px; }
-    .map-layout { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(320px, .85fr); gap: 13px; align-items: start; }
-    .map-card, .side-card { min-width: 0; background: var(--map-surface); border: 1px solid var(--map-line); border-radius: var(--map-radius); box-shadow: var(--map-shadow); overflow: hidden; }
-    .panel-heading { padding: 13px 15px; border-bottom: 1px solid var(--map-line); display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-    .panel-heading h2, .panel-heading h3 { margin: 0; font-size: 1.02rem; }
+    .map-status { padding: 11px 13px; margin-bottom: 12px; border: 1px solid var(--map-line); border-radius: 10px; background: var(--map-surface); color: var(--map-muted); line-height: 1.5; }
+    .map-status.error { background: #fff6f4; border-color: #dfaaa2; color: #8a2c22; }
+    .map-status.success { background: #f2fbf5; border-color: #b3d5bd; color: #205c37; }
+    .map-layout { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(310px, .9fr); gap: 14px; align-items: start; }
+    .map-card, .side-card { min-width: 0; overflow: hidden; border: 1px solid var(--map-line); border-radius: var(--map-radius); background: var(--map-surface); box-shadow: var(--map-shadow); }
+    .panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 15px; border-bottom: 1px solid var(--map-line); }
+    .panel-heading h2 { margin: 0; font-size: 1.05rem; }
     .panel-heading small { color: var(--map-muted); }
-    #map { width: 100%; height: min(70vh, 780px); min-height: 430px; background: #e9eee5; }
-    .map-caption { padding: 9px 12px; color: var(--map-muted); font-size: .78rem; border-top: 1px solid var(--map-line); line-height: 1.5; }
-    .side-inner { padding: 12px; }
-    .search-row { display: grid; grid-template-columns: minmax(0, 1fr) 125px; gap: 8px; }
-    .map-input, .map-select { width: 100%; min-width: 0; padding: 10px 11px; border: 1px solid var(--map-line); border-radius: 9px; background: var(--map-surface); color: var(--map-ink); font: inherit; }
-    .result-summary { color: var(--map-muted); font-size: .82rem; padding: 12px 0 8px; }
-    .element-list { display: grid; gap: 7px; max-height: 340px; overflow: auto; }
-    .element-row { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 9px; align-items: start; width: 100%; text-align: left; border: 1px solid var(--map-line); border-radius: 10px; background: var(--map-surface); padding: 9px; cursor: pointer; color: var(--map-ink); }
-    .element-row:hover, .element-row[aria-current="true"] { border-color: var(--map-accent); background: color-mix(in srgb, var(--map-accent) 6%, white); }
-    .element-kind { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 8px; background: #eaf1eb; color: #245f43; font-weight: 900; font-size: .72rem; }
-    .element-row strong { display: block; overflow-wrap: anywhere; font-size: .88rem; }
-    .element-row small { display: block; margin-top: 3px; color: var(--map-muted); overflow-wrap: anywhere; }
-    .empty-state { padding: 18px 10px; text-align: center; color: var(--map-muted); border: 1px dashed var(--map-line); border-radius: 10px; line-height: 1.5; }
-    .list-pagination { display: flex; gap: 8px; margin-top: 10px; }
-    .list-pagination .map-button { flex: 1; }
+    #map { width: 100%; height: min(72vh, 790px); min-height: 430px; background: #e8eee5; }
+    .map-caption { border-top: 1px solid var(--map-line); padding: 9px 12px; color: var(--map-muted); font-size: .78rem; line-height: 1.5; }
+    .side-inner { padding: 13px; }
+    .search-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+    .map-input { width: 100%; min-width: 0; padding: 11px 12px; border: 1px solid var(--map-line); border-radius: 10px; background: var(--map-surface); color: var(--map-ink); font: inherit; }
+    .micro-list { display: grid; gap: 9px; margin-top: 12px; max-height: 360px; overflow: auto; }
+    .micro-row { width: 100%; display: grid; grid-template-columns: 72px minmax(0,1fr); gap: 10px; padding: 9px; border: 1px solid var(--map-line); border-radius: 12px; background: var(--map-surface); color: var(--map-ink); text-align: left; cursor: pointer; font: inherit; }
+    .micro-row:hover, .micro-row[aria-current="true"] { border-color: var(--map-accent); background: color-mix(in srgb, var(--map-accent) 6%, white); }
+    .micro-row-image { display: block; width: 72px; height: 66px; overflow: hidden; border-radius: 8px; background: var(--surface-2, #e8eee5); }
+    .micro-row-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .micro-row strong { display: block; font-size: .9rem; line-height: 1.3; }
+    .micro-row small { display: block; margin-top: 4px; color: var(--map-muted); font-size: .77rem; line-height: 1.4; }
+    .micro-row-summary { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .empty-state { padding: 18px 12px; border: 1px dashed var(--map-line); border-radius: 10px; color: var(--map-muted); text-align: center; line-height: 1.6; }
     .details-card { margin-top: 13px; }
-    .detail-placeholder { margin: 0; color: var(--map-muted); font-size: .88rem; line-height: 1.6; }
-    .detail-title { margin: 0 0 7px; font-size: 1.18rem; overflow-wrap: anywhere; }
-    .detail-type { display: inline-block; padding: 4px 8px; margin-bottom: 9px; border-radius: 999px; background: #eaf1eb; color: #245f43; font-size: .74rem; font-weight: 850; }
-    .detail-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
-    .detail-section-title { margin: 17px 0 7px; font-size: .94rem; }
-    .detail-table-wrap { overflow: auto; border: 1px solid var(--map-line); border-radius: 9px; }
-    .detail-table { border-collapse: collapse; width: 100%; font-size: .8rem; table-layout: fixed; }
-    .detail-table th, .detail-table td { padding: 7px 8px; border-bottom: 1px solid var(--map-line); text-align: left; vertical-align: top; overflow-wrap: anywhere; }
-    .detail-table th { width: 38%; background: color-mix(in srgb, var(--map-accent) 5%, white); font-weight: 750; }
-    .detail-table tr:last-child th, .detail-table tr:last-child td { border-bottom: 0; }
-    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
-    .map-footer { margin-top: 20px; padding: 16px 0; border-top: 1px solid var(--map-line); color: var(--map-muted); font-size: .8rem; line-height: 1.55; }
-    .leaflet-popup-content { min-width: 210px; margin: 13px 15px; }
-    .osm-popup-title { margin: 0 24px 5px 0; font-size: 1rem; font-weight: 850; overflow-wrap: anywhere; }
-    .osm-popup-meta { color: #65746a; font-size: .78rem; margin-bottom: 7px; }
-    .osm-popup-tags { margin: 0 0 10px; padding-left: 18px; font-size: .82rem; overflow-wrap: anywhere; }
-    .osm-popup-tags li { margin: 3px 0; }
-    .osm-popup-button { display: inline-flex; padding: 8px 11px; border-radius: 8px; background: #246346; color: #fff !important; text-decoration: none !important; font-weight: 800; font-size: .82rem; border: 0; cursor: pointer; }
-    @media (max-width: 1000px) { .map-layout { grid-template-columns: 1fr; } #map { height: 58vh; } .element-list { max-height: 300px; } }
-    @media (max-width: 600px) { .map-page { width: calc(100% - 20px); } .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } #map { height: 52vh; min-height: 340px; } .search-row { grid-template-columns: 1fr; } .map-toolbar .map-button { flex: 1 1 auto; } }
+    .detail-body { padding: 15px; }
+    .detail-placeholder { margin: 0; color: var(--map-muted); line-height: 1.65; font-size: .9rem; }
+    .detail-kicker { margin: 0 0 6px; color: var(--map-accent); font-size: .76rem; font-weight: 850; letter-spacing: .06em; text-transform: uppercase; }
+    .detail-title { margin: 0 0 9px; font-size: 1.28rem; line-height: 1.2; overflow-wrap: anywhere; }
+    .detail-summary { margin: 0 0 14px; font-size: 1rem; line-height: 1.6; font-weight: 650; }
+    .detail-description { line-height: 1.65; overflow-wrap: anywhere; }
+    .detail-description > :first-child { margin-top: 0; }
+    .detail-description img { max-width: 100%; height: auto; }
+    .detail-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 2px; }
+    .detail-gallery { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 9px; margin: 14px 0; }
+    .detail-photo { margin: 0; min-width: 0; }
+    .detail-photo img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; border-radius: 9px; background: var(--surface-2, #e8eee5); }
+    .detail-photo figcaption { padding-top: 5px; font-size: .79rem; color: var(--map-muted); line-height: 1.45; }
+    .facts { display: grid; grid-template-columns: 1fr; gap: 0; margin: 13px 0; border-top: 1px solid var(--map-line); }
+    .fact-row { display: grid; grid-template-columns: minmax(90px,.65fr) 1fr; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--map-line); font-size: .87rem; }
+    .fact-row dt { color: var(--map-muted); font-weight: 750; }
+    .fact-row dd { margin: 0; overflow-wrap: anywhere; }
+    .map-footer { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--map-line); color: var(--map-muted); font-size: .8rem; line-height: 1.6; }
+    .leaflet-popup-content { min-width: 200px; max-width: 290px; margin: 13px 15px; }
+    .map-popup h3 { margin: 0 0 7px; font-size: 1rem; line-height: 1.25; }
+    .map-popup p { margin: 0 0 10px; font-size: .84rem; line-height: 1.5; }
+    .map-popup img { display: block; width: 100%; max-height: 130px; margin: 0 0 9px; object-fit: cover; border-radius: 7px; }
+    .map-popup .map-button { min-height: 34px; padding: 7px 10px; font-size: .8rem; }
+    /* As xeometrías descargadas de OSM son zonas de clic, non debuxos superpostos.
+       A cartografía visible segue sendo o fondo oficial de OpenStreetMap. */
+    .leaflet-overlay-pane svg path.leaflet-interactive { opacity: 0 !important; pointer-events: all !important; }
+    @media(max-width: 1000px) { .map-layout { grid-template-columns: 1fr; } #map { height: 58vh; } .micro-list { max-height: 300px; } }
+    @media(max-width: 600px) { .map-page { width: calc(100% - 20px); } #map { height: 56vh; min-height: 350px; } .search-row { grid-template-columns: 1fr; } .micro-row { grid-template-columns: 62px minmax(0,1fr); } .micro-row-image { width: 62px; height: 62px; } .panel-heading { align-items: flex-start; } }
   </style>
 </head>
 <body>
@@ -94,10 +89,15 @@
         <span class="brand-symbol">C</span>
         <span><strong>Celeiros</strong><small>Ponteareas · Pontevedra</small></span>
       </a>
-      <nav class="site-nav" aria-label="Navegación principal">
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav">☰ <span class="sr-only">Abrir menú</span></button>
+      <nav id="site-nav" class="site-nav" aria-label="Navegación principal">
         <a href="index.html">Inicio</a>
-        <a href="noticias.html">Noticias</a>
+        <a href="parques-infantiles.html">Parques</a>
+        <a href="teleclub.html">Teleclub</a>
+        <a href="carballeira-dance.html">Dance</a>
+        <a href="carballeira-rock.html">Rock</a>
         <a href="galeria.html">Galería</a>
+        <a href="mapa.html" aria-current="page">Mapa</a>
         <a href="contacto.html">Contacto</a>
       </nav>
     </div>
@@ -105,76 +105,46 @@
 
   <main class="map-page">
     <section class="map-intro">
-      <p class="eyebrow">Cartografía en liña · Celeiros</p>
-      <h1>Mapa interactivo</h1>
-      <p>A cartografía e os elementos de Celeiros cárganse automaticamente desde servizos públicos de OpenStreetMap. Preme nunha estrada, edificio, lugar ou punto marcado para ver un resumo e abrir a ficha completa.</p>
+      <p class="eyebrow">Cartografía e patrimonio local</p>
+      <h1>Mapa de Celeiros</h1>
+      <p>Explora o mapa e preme nunha estrada, edificio ou punto para consultar a ficha local se xa foi preparada. Os trazos invisibles só serven para detectar os clics: non tapan a cartografía de OpenStreetMap. As descricións, fotografías e datos útiles escríbense no HTML das microseccións, non nas etiquetas técnicas de OSM.</p>
     </section>
 
     <section class="map-toolbar" aria-label="Controis do mapa">
-      <button class="map-button" id="fitMap" type="button">Ver toda a zona</button>
-      <button class="map-button" id="showAll" type="button">Ver elementos</button>
-      <a class="map-button" href="https://www.openstreetmap.org/fixthemap" target="_blank" rel="noopener noreferrer">Corrixir mapa</a>
+      <button class="map-button primary" id="fitMap" type="button">Ver toda a zona</button>
+      <button class="map-button" id="showMicrosections" type="button">Ver todas as fichas</button>
+      <a class="map-button" href="https://www.openstreetmap.org/fixthemap" target="_blank" rel="noopener noreferrer">Informar dun erro cartográfico ↗</a>
     </section>
-
-    <div id="status" class="map-status" role="status" aria-live="polite">Cargando o mapa e os elementos locais…</div>
-
-    <section class="stats-grid" aria-label="Resumo dos elementos">
-      <div class="stat-card"><strong id="nodesCount">—</strong><span>Nodos</span></div>
-      <div class="stat-card"><strong id="waysCount">—</strong><span>Vías</span></div>
-      <div class="stat-card"><strong id="relationsCount">—</strong><span>Relacións</span></div>
-      <div class="stat-card"><strong id="taggedCount">—</strong><span>Elementos con etiquetas</span></div>
-    </section>
+    <div id="status" class="map-status" role="status" aria-live="polite">Iniciando o mapa…</div>
 
     <div class="map-layout">
-      <section class="map-card" aria-label="Mapa de OpenStreetMap con elementos locais">
-        <div class="panel-heading">
-          <h2>Mapa de Celeiros</h2>
-          <small id="mapHint">Cargando cartografía…</small>
-        </div>
-        <div id="map" role="region" aria-label="Mapa interactivo de Celeiros"></div>
-        <div class="map-caption">Cartografía © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>. Os elementos destacados consultáronse en liña en OpenStreetMap.</div>
+      <section class="map-card" aria-label="Mapa interactivo de OpenStreetMap">
+        <div class="panel-heading"><h2>Mapa interactivo</h2><small id="mapHint">Cargando fondo cartográfico…</small></div>
+        <div id="map" role="region" aria-label="Mapa de Celeiros; preme nos elementos para consultar información"></div>
+        <div class="map-caption">Cartografía © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>. As capas interactivas non se debuxan por riba do mapa.</div>
       </section>
 
       <aside>
-        <section class="side-card">
-          <div class="panel-heading">
-            <h2>Buscar elementos</h2>
-            <small id="resultCount">0 resultados</small>
-          </div>
+        <section class="side-card" aria-labelledby="microListTitle">
+          <div class="panel-heading"><h2 id="microListTitle">Fichas de Celeiros</h2><small id="microCount">0 fichas</small></div>
           <div class="side-inner">
             <div class="search-row">
-              <input class="map-input" id="searchElements" type="search" placeholder="Nome, ID ou etiqueta…" aria-label="Buscar elementos">
-              <select class="map-select" id="typeFilter" aria-label="Filtrar por tipo">
-                <option value="tagged">Con etiquetas</option>
-                <option value="all">Todos os elementos</option>
-                <option value="node">Nodos</option>
-                <option value="way">Vías</option>
-                <option value="relation">Relacións</option>
-              </select>
+              <input class="map-input" id="searchMicrosections" type="search" placeholder="Buscar lugares ou temas…" aria-label="Buscar fichas do mapa">
+              <button class="map-button" type="button" id="clearSearch">Limpar</button>
             </div>
-            <div class="result-summary" id="listHint">Os elementos consultados en liña aparecerán aquí.</div>
-            <div class="element-list" id="elementList"><div class="empty-state">Consultando os elementos de Celeiros…</div></div>
-            <div class="list-pagination">
-              <button class="map-button" type="button" id="previousPage" disabled>← Anteriores</button>
-              <button class="map-button" type="button" id="nextPage" disabled>Seguintes →</button>
-            </div>
+            <div class="micro-list" id="microList"><div class="empty-state">Lendo as microseccións editoriais…</div></div>
           </div>
         </section>
 
-        <section class="side-card details-card">
-          <div class="panel-heading">
-            <h2>Detalle completo</h2>
-            <small id="detailId">Sen selección</small>
-          </div>
-          <div class="side-inner" id="detailPanel">
-            <p class="detail-placeholder">Fai clic nun elemento do mapa. O resumo aparecerá nunha ventá; «Abrir detalle» mostrará aquí todas as etiquetas, metadatos e referencias devoltas por OpenStreetMap.</p>
-          </div>
+        <section class="side-card details-card" aria-labelledby="detailHeading">
+          <div class="panel-heading"><h2 id="detailHeading">Información do elemento</h2><small id="detailRef">Sen selección</small></div>
+          <div class="detail-body" id="detailPanel"><p class="detail-placeholder">Preme nun elemento do mapa ou nunha ficha da lista. Se existe unha microsección vinculada ao seu identificador de OpenStreetMap, aparecerán aquí a descrición, as imaxes e os datos que se escribiron no HTML.</p></div>
         </section>
       </aside>
     </div>
 
     <footer class="map-footer">
-      Os datos dos elementos cárganse en liña desde OpenStreetMap para a zona de Celeiros. O fondo cartográfico carga a medida que o visitante navega polo mapa. Respectamos a atribución e o uso razoable dos servizos públicos.
+      Os datos xeográficos proceden de OpenStreetMap e cárganse a través do Worker de Celeiros. As fichas editoriais son contido propio da web e poden engadir información, fotografías, accesibilidade, horarios ou referencias que non aparecen en OSM. A cartografía, a atribución e os servizos de datos están suxeitos ás súas condicións de uso.
     </footer>
   </main>
 
@@ -182,609 +152,392 @@
   <script>
   (() => {
     "use strict";
-
     const $ = id => document.getElementById(id);
-    const PAGE_SIZE = 55;
-    const POLYGON_TAGS = new Set([
-      "building", "landuse", "leisure", "natural", "water", "amenity",
-      "shop", "tourism", "place", "boundary", "military", "historic",
-      "man_made", "public_transport", "area", "aeroway", "office"
-    ]);
-    const BASIC_TAGS = [
-      "name", "name:gl", "name:es", "amenity", "highway", "building",
-      "leisure", "natural", "landuse", "shop", "tourism", "historic",
-      "surface", "operator", "opening_hours", "addr:street", "addr:housenumber"
-    ];
+
+    const AREA = { south: 42.1609700, west: -8.4639100, north: 42.1738000, east: -8.4405300 };
+    // Cambia esta URL pola URL real do Worker desplegado en Cloudflare.
+    // Debe responder en /api/overpass; non engadas esa ruta ao valor de DATA_API.
+    const DATA_API = "https://mapa-celeiros-osm.lucasmaneirodelatm.workers.dev";
+    const MICROSECTIONS_URL = "microsecciones-mapa.html";
 
     let map = null;
-    let baseLayer = null;
     let dataLayer = null;
-    let allElements = [];
-    let filteredElements = [];
+    let mapBounds = null;
+    let osmElements = [];
     let elementByKey = new Map();
-    let nodeById = new Map();
     let mapLayerByKey = new Map();
-    let queryBounds = null;
-    let currentPage = 0;
+    let microsections = [];
+    let microsectionByKey = new Map();
     let selectedKey = null;
-    let lastOpenPopup = null;
 
-    function setStatus(message, type = "") {
-      const status = $("status");
-      status.textContent = message;
-      status.className = "map-status" + (type ? " " + type : "");
+    const keyFor = (type, id) => `${type}/${String(id)}`;
+    const elementTypeName = type => ({ node: "Punto", way: "Vía ou área", relation: "Relación xeográfica" }[type] || "Elemento cartográfico");
+    const formatInt = n => new Intl.NumberFormat("gl-ES").format(Number(n) || 0);
+    const hasTags = el => !!el?.tags && Object.keys(el.tags).length > 0;
+    const osmTitle = el => el.tags?.name || el.tags?.["name:gl"] || el.tags?.["name:es"] || el.tags?.amenity || el.tags?.shop || el.tags?.tourism || el.tags?.leisure || el.tags?.building || el.tags?.highway || `${elementTypeName(el.type)} ${el.id}`;
+
+    function status(message, kind = "") {
+      const node = $("status");
+      node.textContent = message;
+      node.className = "map-status" + (kind ? " " + kind : "");
     }
-
-    function formatNumber(value) {
-      return new Intl.NumberFormat("gl-ES").format(Number(value) || 0);
+    function make(tag, className, text) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text !== undefined && text !== null) node.textContent = String(text);
+      return node;
     }
-
-    function elementKey(type, id) { return type + "/" + id; }
-
-    function elementTypeName(type) {
-      return type === "node" ? "Nodo" : type === "way" ? "Vía" : "Relación";
+    function safeURL(raw, baseURL) {
+      if (!raw) return "";
+      try {
+        const url = new URL(raw, baseURL);
+        if (["https:", "http:"].includes(url.protocol)) return url.href;
+      } catch (_) {}
+      return "";
     }
+    function pageKey(type, id) { return keyFor(type, id); }
 
-    function elementShortType(type) {
-      return type === "node" ? "N" : type === "way" ? "V" : "R";
-    }
-
-    function displayName(el) {
-      return el.tags.name || el.tags["name:gl"] || el.tags["name:es"] ||
-        el.tags.amenity || el.tags.highway || el.tags.building || el.tags.shop ||
-        el.tags.leisure || el.tags.natural || el.tags.tourism ||
-        (elementTypeName(el.type) + " " + el.id);
-    }
-
-    function hasTags(el) { return Object.keys(el.tags || {}).length > 0; }
-
-    // Ámbito xeográfico consultado en liña para Celeiros.
-    const AREA = {
-      south: 42.1609700,
-      west: -8.4639100,
-      north: 42.1738000,
-      east: -8.4405300
-    };
-
-    // Instancias públicas de Overpass. Non se inclúen espellos que teñen
-    // respostas 403 coñecidas. Se unha instancia non responde, inténtase a seguinte.
-    const OVERPASS_ENDPOINTS = [
-      "https://overpass-api.de/api/interpreter",
-      "https://lz4.overpass-api.de/api/interpreter",
-      "https://overpass.kumi.systems/api/interpreter"
-    ];
-
-    function buildOverpassQuery() {
-      const b = AREA;
-      return `[out:json][timeout:25];(nwr(${b.south},${b.west},${b.north},${b.east}););out meta geom;`;
+    async function loadMicrosections() {
+      const response = await fetch(MICROSECTIONS_URL, { headers: { "Accept": "text/html" }, cache: "default" });
+      if (!response.ok) throw new Error(`Non se puido ler ${MICROSECTIONS_URL} (HTTP ${response.status}).`);
+      const source = await response.text();
+      const doc = new DOMParser().parseFromString(source, "text/html");
+      const seen = new Set();
+      const parsed = [];
+      for (const article of doc.querySelectorAll("#map-microsections .map-microsection[data-osm-type][data-osm-id]")) {
+        const type = (article.dataset.osmType || "node").trim().toLowerCase();
+        const id = (article.dataset.osmId || "").trim();
+        if (!["node", "way", "relation"].includes(type) || !/^\d+$/.test(id)) continue;
+        const key = pageKey(type, id);
+        if (seen.has(key)) {
+          console.warn("Microsección duplicada ignorada:", key);
+          continue;
+        }
+        seen.add(key);
+        const title = article.querySelector(".micro-title")?.textContent.trim() || article.dataset.title || `Lugar ${id}`;
+        const category = article.querySelector(".micro-category")?.textContent.trim() || article.dataset.category || "Celeiros";
+        const summary = article.querySelector(".micro-summary")?.textContent.trim() || "Consulta a información local deste lugar.";
+        const description = article.querySelector(".micro-description");
+        const images = [...article.querySelectorAll(".micro-images img")].map(img => {
+          const raw = img.getAttribute("src") || img.getAttribute("data-src") || "";
+          const src = safeURL(raw, new URL(MICROSECTIONS_URL, window.location.href).href);
+          if (!src) return null;
+          const figure = img.closest("figure");
+          return { src, alt: img.getAttribute("alt") || title, caption: figure?.querySelector("figcaption")?.textContent.trim() || "" };
+        }).filter(Boolean);
+        const facts = [...article.querySelectorAll(".micro-facts > div")].map(row => {
+          const dt = row.querySelector("dt")?.textContent.trim();
+          const dd = row.querySelector("dd")?.textContent.trim();
+          return dt && dd ? { label: dt, value: dd } : null;
+        }).filter(Boolean);
+        const links = [...article.querySelectorAll(".micro-links a[href]")].map(a => ({
+          href: safeURL(a.getAttribute("href"), new URL(MICROSECTIONS_URL, window.location.href).href),
+          label: a.textContent.trim() || "Máis información"
+        })).filter(link => link.href);
+        parsed.push({ key, type, id, title, category, summary, description, images, facts, links });
+      }
+      microsections = parsed;
+      microsectionByKey = new Map(microsections.map(item => [item.key, item]));
+      renderMicrosectionList();
     }
 
     async function fetchOnlineElements() {
-      const query = buildOverpassQuery();
-      let lastError = null;
-
-      for (const endpoint of OVERPASS_ENDPOINTS) {
-        try {
-          // GET cunha consulta curta: é unha petición simple e non precisa
-          // OPTIONS/preflight. Os espellos problemáticos coñecidos non se usan.
-          const response = await fetch(endpoint + "?data=" + encodeURIComponent(query), {
-            method: "GET",
-            headers: { "Accept": "application/json" },
-            cache: "no-store",
-            redirect: "follow"
-          });
-
-          if (!response.ok) {
-            lastError = new Error("Servizo de datos non dispoñible");
-            continue;
-          }
-
-          const data = await response.json();
-          if (!data || !Array.isArray(data.elements)) {
-            lastError = new Error("Resposta de datos non válida");
-            continue;
-          }
-
-          return { data, endpoint };
-        } catch (_) {
-          // Non imprimimos cada fallo de espellos na consola; inténtase outro.
-          lastError = new Error("Non foi posible conectar cos servizos de datos");
-        }
+      if (!DATA_API || DATA_API.includes("PON-AQUI-LA-URL")) {
+        throw new Error("Falta configurar DATA_API co enderezo real do Worker de Cloudflare. O fondo de OpenStreetMap seguirá visible, pero os obxectos aínda non serán interactivos.");
       }
-
-      throw lastError || new Error("Datos en liña temporalmente non dispoñibles");
+      const endpoint = DATA_API.replace(/\/$/, "") + "/api/overpass";
+      const response = await fetch(endpoint, { headers: { "Accept": "application/json" }, cache: "default" });
+      if (!response.ok) throw new Error(`A API do mapa respondeu HTTP ${response.status}. Comproba o Worker de Cloudflare.`);
+      const data = await response.json();
+      if (!data || !Array.isArray(data.elements)) throw new Error("O Worker devolveu datos cartográficos nun formato non válido.");
+      return data;
     }
 
-    function tagsFromJson(tags) {
-      return tags && typeof tags === "object" ? { ...tags } : {};
-    }
-
-    function overpassMeta(el) {
-      const keys = ["visible", "version", "changeset", "timestamp", "user", "uid"];
-      const meta = {};
-      for (const key of keys) {
-        if (el[key] !== undefined && el[key] !== null) meta[key] = el[key];
-      }
-      return meta;
-    }
-
-    function inQueryArea(point) {
-      return Array.isArray(point) &&
-        point[0] >= AREA.south && point[0] <= AREA.north &&
-        point[1] >= AREA.west && point[1] <= AREA.east;
-    }
-
-    function parseOnlineElements(data) {
-      allElements = [];
-      elementByKey.clear();
-      nodeById.clear();
-      mapLayerByKey.clear();
-
+    function normalizeElements(data) {
       const raw = Array.isArray(data.elements) ? data.elements : [];
-
-      // Primeiro gardamos nodos, para resolver referencias das vías.
+      const nodes = new Map();
+      const records = [];
       for (const item of raw) {
-        if (item.type !== "node" || item.lat === undefined || item.lon === undefined) continue;
-        const id = String(item.id);
+        if (item.type !== "node" || item.lat == null || item.lon == null) continue;
         const record = {
-          key: elementKey("node", id), type: "node", id,
-          lat: Number(item.lat), lon: Number(item.lon),
-          tags: tagsFromJson(item.tags), meta: overpassMeta(item),
-          refs: [], members: [], coords: [[Number(item.lat), Number(item.lon)]]
+          key: keyFor("node", item.id), type: "node", id: String(item.id),
+          lat: Number(item.lat), lon: Number(item.lon), tags: item.tags || {}, coords: [[Number(item.lat), Number(item.lon)]], refs: [], members: [], meta: item
         };
-        nodeById.set(id, record);
-        allElements.push(record);
-        elementByKey.set(record.key, record);
+        nodes.set(record.id, record);
+        records.push(record);
       }
-
-      // Vías: Overpass entrega a xeometría xa expandida en out geom.
+      const byKey = new Map(records.map(el => [el.key, el]));
       for (const item of raw) {
         if (item.type !== "way") continue;
-        const id = String(item.id);
-        const coords = Array.isArray(item.geometry)
-          ? item.geometry.filter(p => Number.isFinite(Number(p.lat)) && Number.isFinite(Number(p.lon)))
-              .map(p => [Number(p.lat), Number(p.lon)])
-          : [];
-        const record = {
-          key: elementKey("way", id), type: "way", id,
-          tags: tagsFromJson(item.tags), meta: overpassMeta(item),
-          refs: Array.isArray(item.nodes) ? item.nodes.map(String) : [],
-          members: [], coords
-        };
-        allElements.push(record);
-        elementByKey.set(record.key, record);
+        const coords = Array.isArray(item.geometry) ? item.geometry.filter(p => p && Number.isFinite(+p.lat) && Number.isFinite(+p.lon)).map(p => [+p.lat, +p.lon]) : [];
+        const record = { key: keyFor("way", item.id), type: "way", id: String(item.id), tags: item.tags || {}, coords, refs: Array.isArray(item.nodes) ? item.nodes.map(String) : [], members: [], meta: item };
+        records.push(record); byKey.set(record.key, record);
       }
-
-      // Relacións: gardamos os membros e só usamos coordenadas da zona consultada
-      // para situalas no mapa. A ficha conserva todas as referencias do servidor.
       for (const item of raw) {
         if (item.type !== "relation") continue;
-        const id = String(item.id);
-        const members = (Array.isArray(item.members) ? item.members : []).map(m => ({
-          type: m.type || "",
-          ref: String(m.ref ?? ""),
-          role: m.role || "",
-          geometry: Array.isArray(m.geometry)
-            ? m.geometry.filter(p => Number.isFinite(Number(p.lat)) && Number.isFinite(Number(p.lon)))
-                .map(p => [Number(p.lat), Number(p.lon)])
-            : []
-        }));
+        const members = (Array.isArray(item.members) ? item.members : []).map(m => ({ type: m.type || "", ref: String(m.ref ?? ""), role: m.role || "", geometry: Array.isArray(m.geometry) ? m.geometry.filter(p => p && Number.isFinite(+p.lat) && Number.isFinite(+p.lon)).map(p => [+p.lat, +p.lon]) : [] }));
         const coords = [];
-        for (const m of members) {
-          if (m.geometry.length) coords.push(...m.geometry.filter(inQueryArea));
-          else if (m.type === "node") {
-            const node = nodeById.get(m.ref);
-            if (node && inQueryArea([node.lat, node.lon])) coords.push([node.lat, node.lon]);
-          } else if (m.type === "way") {
-            const way = elementByKey.get(elementKey("way", m.ref));
-            if (way) coords.push(...way.coords.filter(inQueryArea));
-          }
-        }
-        const record = {
-          key: elementKey("relation", id), type: "relation", id,
-          tags: tagsFromJson(item.tags), meta: overpassMeta(item),
-          refs: [], members, coords
-        };
-        allElements.push(record);
-        elementByKey.set(record.key, record);
+        members.forEach(m => {
+          if (m.geometry.length) coords.push(...m.geometry);
+          else if (m.type === "node") { const n = nodes.get(m.ref); if (n) coords.push([n.lat, n.lon]); }
+          else if (m.type === "way") { const w = byKey.get(keyFor("way", m.ref)); if (w) coords.push(...w.coords); }
+        });
+        const record = { key: keyFor("relation", item.id), type: "relation", id: String(item.id), tags: item.tags || {}, coords, refs: [], members, meta: item };
+        records.push(record); byKey.set(record.key, record);
       }
+      osmElements = records;
+      elementByKey = byKey;
+      return { nodes: raw.filter(x => x.type === "node").length, ways: raw.filter(x => x.type === "way").length, relations: raw.filter(x => x.type === "relation").length };
+    }
 
-      allElements.sort((a, b) => {
-        const typeOrder = { node: 0, way: 1, relation: 2 };
-        return typeOrder[a.type] - typeOrder[b.type] || a.id.localeCompare(b.id);
-      });
+    const POLYGON_KEYS = new Set(["building", "landuse", "leisure", "natural", "water", "amenity", "shop", "tourism", "place", "boundary", "historic", "man_made", "public_transport", "office", "aeroway", "military"]);
+    function isPolygon(el) {
+      if (el.type !== "way" || el.coords.length < 4) return false;
+      const first = el.coords[0], last = el.coords[el.coords.length - 1];
+      if (first[0] !== last[0] || first[1] !== last[1]) return false;
+      if (el.tags.area === "no") return false;
+      return el.tags.area === "yes" || [...POLYGON_KEYS].some(k => Object.prototype.hasOwnProperty.call(el.tags, k));
+    }
+    function getBounds(el) {
+      const coords = el.coords || [];
+      return coords.length ? L.latLngBounds(coords) : null;
+    }
 
+    function invisibleStyle(el, polygon) {
+      // OSM xa pinta estradas, edificios, áreas verdes, etc. no fondo; esta capa é só un alvo de clic.
       return {
-        nodes: raw.filter(e => e.type === "node").length,
-        ways: raw.filter(e => e.type === "way").length,
-        relations: raw.filter(e => e.type === "relation").length
+        color: "#000000", weight: polygon ? 12 : 15, opacity: 0,
+        fill: polygon, fillColor: "#000000", fillOpacity: 0,
+        lineCap: "round", lineJoin: "round", interactive: true, bubblingMouseEvents: false
       };
     }
 
-    function isClosedWay(el) {
-      if (el.coords.length < 4) return false;
-      const first = el.coords[0];
-      const last = el.coords[el.coords.length - 1];
-      return first[0] === last[0] && first[1] === last[1];
-    }
-
-    function isArea(el) {
-      if (el.tags.area === "yes") return true;
-      if (el.tags.area === "no") return false;
-      if (!isClosedWay(el)) return false;
-      return Array.from(POLYGON_TAGS).some(key => Object.prototype.hasOwnProperty.call(el.tags, key));
-    }
-
-    function wayStyle(el, polygon) {
-      const t = el.tags;
-      if (polygon) {
-        if (t.natural === "water" || t.water || t.landuse === "reservoir") return { color: "#4e92bf", weight: 1.4, fillColor: "#8fc6e8", fillOpacity: .65 };
-        if (t.building) return { color: "#978879", weight: 1.15, fillColor: "#cbbfb2", fillOpacity: .68 };
-        if (t.leisure === "park" || t.leisure === "garden" || t.landuse === "grass" || t.landuse === "forest" || t.natural === "wood" || t.landuse === "meadow") return { color: "#5b9764", weight: 1.2, fillColor: "#9ac99c", fillOpacity: .55 };
-        return { color: "#947f62", weight: 1.2, fillColor: "#d6c4a0", fillOpacity: .42 };
-      }
-      if (t.highway) {
-        const major = ["motorway", "trunk", "primary", "secondary", "tertiary"].includes(t.highway);
-        return { color: major ? "#df8d48" : "#9a9b96", weight: major ? 4 : (t.highway === "path" || t.highway === "footway" ? 2 : 3), opacity: .95, dashArray: ["path", "footway", "track", "cycleway"].includes(t.highway) ? "5 5" : null };
-      }
-      if (t.railway) return { color: "#6e6672", weight: 2.2, dashArray: "6 3" };
-      if (t.waterway) return { color: "#559fce", weight: 3 };
-      if (t.barrier) return { color: "#958c7c", weight: 1.8, dashArray: "3 3" };
-      return { color: "#b5a68c", weight: 2, opacity: .9 };
-    }
-
-    function getFeatureBounds(el) {
-      if (!el.coords || !el.coords.length) return null;
-      const points = el.coords.filter(p => Array.isArray(p) && Number.isFinite(p[0]) && Number.isFinite(p[1]));
-      return points.length ? L.latLngBounds(points) : null;
-    }
-
-    function createDataLayer() {
+    function createTransparentLayers() {
       if (dataLayer) dataLayer.remove();
       dataLayer = L.featureGroup().addTo(map);
       mapLayerByKey.clear();
-
-      // Vías debuxadas a partir da xeometría devolta por Overpass.
-      for (const el of allElements) {
-        if (el.type !== "way" || !hasTags(el) || el.coords.length < 2) continue;
-        const polygon = isArea(el);
-        let layer;
-        if (polygon) {
-          layer = L.polygon(el.coords, wayStyle(el, true), { bubblingMouseEvents: false });
-        } else {
-          layer = L.polyline(el.coords, wayStyle(el, false), { bubblingMouseEvents: false });
+      for (const el of osmElements) {
+        if (!hasTags(el)) continue;
+        if (el.type === "way" && el.coords.length >= 2) {
+          const layer = isPolygon(el) ? L.polygon(el.coords, invisibleStyle(el, true)) : L.polyline(el.coords, invisibleStyle(el, false));
+          layer.on("click", () => selectElement(el, true));
+          layer.addTo(dataLayer); mapLayerByKey.set(el.key, layer);
         }
-        layer.on("click", () => selectElement(el, true));
-        layer.addTo(dataLayer);
-        mapLayerByKey.set(el.key, layer);
       }
-
-      // Nodos con etiquetas: elementos puntuais que normalmente teñen interese.
-      for (const el of allElements) {
+      // Os nodos son alvos invisibles amplos para que tamén se poidan seleccionar en pantallas táctiles.
+      for (const el of osmElements) {
         if (el.type !== "node" || !hasTags(el)) continue;
-        const tagKeys = Object.keys(el.tags);
-        const important = tagKeys.some(k => ["name", "amenity", "highway", "shop", "tourism", "leisure", "public_transport", "railway", "historic", "natural", "entrance", "place", "barrier"].includes(k));
-        if (!important) continue;
         const marker = L.circleMarker([el.lat, el.lon], {
-          radius: el.tags.name ? 6 : 4.5,
-          color: "#fff",
-          weight: 1.5,
-          fillColor: "#246346",
-          fillOpacity: .95,
-          bubblingMouseEvents: false
+          radius: 10, color: "#000", weight: 14, opacity: 0, fillColor: "#000", fillOpacity: 0,
+          interactive: true, bubblingMouseEvents: false
         });
         marker.on("click", () => selectElement(el, true));
-        marker.addTo(dataLayer);
-        mapLayerByKey.set(el.key, marker);
+        marker.addTo(dataLayer); mapLayerByKey.set(el.key, marker);
       }
-
-      // As relacións aparecen na lista. Un marcador central fai que tamén se poidan abrir desde o mapa.
-      for (const el of allElements) {
+      // Para relacións sen unha xeometría directa, úsase un alvo de clic no centro aproximado.
+      for (const el of osmElements) {
         if (el.type !== "relation" || !hasTags(el) || !el.coords.length) continue;
-        const bounds = getFeatureBounds(el);
+        const bounds = getBounds(el);
         if (!bounds || !bounds.isValid()) continue;
-        const center = bounds.getCenter();
-        const marker = L.circleMarker(center, {
-          radius: 7, color: "#fff", weight: 1.5,
-          fillColor: "#7654a5", fillOpacity: .95,
-          bubblingMouseEvents: false
-        });
+        const marker = L.circleMarker(bounds.getCenter(), { radius: 12, color: "#000", weight: 12, opacity: 0, fillColor: "#000", fillOpacity: 0, interactive: true, bubblingMouseEvents: false });
         marker.on("click", () => selectElement(el, true));
-        marker.addTo(dataLayer);
-        mapLayerByKey.set(el.key, marker);
+        marker.addTo(dataLayer); mapLayerByKey.set(el.key, marker);
       }
     }
 
-    function make(tag, className, text) {
-      const el = document.createElement(tag);
-      if (className) el.className = className;
-      if (text !== undefined) el.textContent = text;
-      return el;
+    function osmURL(el) { return `https://www.openstreetmap.org/${el.type}/${encodeURIComponent(el.id)}`; }
+    function resolveMicrosection(el) { return microsectionByKey.get(el.key) || null; }
+
+    function safeCopyContent(source, target) {
+      if (!source) return;
+      const allowed = new Set(["P", "BR", "STRONG", "B", "EM", "I", "UL", "OL", "LI", "BLOCKQUOTE", "H3", "H4", "SMALL"]);
+      for (const child of source.childNodes) {
+        if (child.nodeType === Node.TEXT_NODE) { target.appendChild(document.createTextNode(child.textContent)); continue; }
+        if (child.nodeType !== Node.ELEMENT_NODE) continue;
+        const tag = child.tagName;
+        if (tag === "A") {
+          const href = safeURL(child.getAttribute("href"), new URL(MICROSECTIONS_URL, window.location.href).href);
+          if (!href) { target.appendChild(document.createTextNode(child.textContent)); continue; }
+          const a = document.createElement("a"); a.href = href; a.textContent = child.textContent;
+          if (new URL(href).origin !== window.location.origin) { a.target = "_blank"; a.rel = "noopener noreferrer"; }
+          target.appendChild(a); continue;
+        }
+        if (!allowed.has(tag)) { safeCopyContent(child, target); continue; }
+        const el = document.createElement(tag.toLowerCase()); safeCopyContent(child, el); target.appendChild(el);
+      }
+    }
+
+    function renderDetail(el) {
+      selectedKey = el.key;
+      $("detailRef").textContent = `${el.type}/${el.id}`;
+      const panel = $("detailPanel"); panel.replaceChildren();
+      const custom = resolveMicrosection(el);
+      if (!custom) {
+        panel.appendChild(make("p", "detail-kicker", "OpenStreetMap · sen ficha propia"));
+        panel.appendChild(make("h3", "detail-title", osmTitle(el)));
+        panel.appendChild(make("p", "detail-summary", "Este elemento aparece na cartografía de OpenStreetMap, pero aínda non ten unha microsección editorial de Celeiros."));
+        if (el.type === "node" && Number.isFinite(el.lat) && Number.isFinite(el.lon)) {
+          panel.appendChild(make("p", "detail-placeholder", `Coordenadas: ${el.lat.toFixed(6)}, ${el.lon.toFixed(6)}`));
+        }
+        const actions = make("div", "detail-actions");
+        const link = make("a", "map-button primary", "Abrir en OpenStreetMap ↗"); link.href = osmURL(el); link.target = "_blank"; link.rel = "noopener noreferrer"; actions.appendChild(link); panel.appendChild(actions);
+        const note = make("p", "detail-placeholder", "Para engadir unha descrición, fotografías ou datos útiles, crea unha ficha para este tipo e ID en microsecciones-mapa.html."); note.style.marginTop = "12px"; panel.appendChild(note);
+        return;
+      }
+      panel.appendChild(make("p", "detail-kicker", custom.category));
+      panel.appendChild(make("h3", "detail-title", custom.title));
+      panel.appendChild(make("p", "detail-summary", custom.summary));
+      if (custom.description) {
+        const description = make("div", "detail-description"); safeCopyContent(custom.description, description); panel.appendChild(description);
+      }
+      if (custom.images.length) {
+        const gallery = make("div", "detail-gallery");
+        custom.images.forEach(photo => {
+          const figure = make("figure", "detail-photo");
+          const img = document.createElement("img"); img.src = photo.src; img.alt = photo.alt; img.loading = "lazy";
+          img.addEventListener("error", () => { figure.remove(); });
+          figure.appendChild(img);
+          if (photo.caption) figure.appendChild(make("figcaption", "", photo.caption));
+          gallery.appendChild(figure);
+        });
+        panel.appendChild(gallery);
+      }
+      if (custom.facts.length) {
+        const facts = make("dl", "facts");
+        custom.facts.forEach(fact => { const row = make("div", "fact-row"); row.appendChild(make("dt", "", fact.label)); row.appendChild(make("dd", "", fact.value)); facts.appendChild(row); });
+        panel.appendChild(facts);
+      }
+      const actions = make("div", "detail-actions");
+      const osm = make("a", "map-button", "Ver referencia en OpenStreetMap ↗"); osm.href = osmURL(el); osm.target = "_blank"; osm.rel = "noopener noreferrer"; actions.appendChild(osm);
+      custom.links.forEach(linkData => { const a = make("a", "map-button primary", linkData.label); a.href = linkData.href; if (new URL(linkData.href).origin !== window.location.origin) { a.target = "_blank"; a.rel = "noopener noreferrer"; } actions.appendChild(a); });
+      panel.appendChild(actions);
     }
 
     function buildPopup(el) {
-      const root = document.createElement("div");
-      root.className = "osm-popup";
-      root.appendChild(make("h3", "osm-popup-title", displayName(el)));
-      root.appendChild(make("div", "osm-popup-meta", elementTypeName(el.type) + " · ID " + el.id));
-
-      const ul = make("ul", "osm-popup-tags");
-      let count = 0;
-      for (const key of BASIC_TAGS) {
-        const value = el.tags[key];
-        if (!value) continue;
-        if (key === "name" || key === "name:gl" || key === "name:es") continue;
-        const li = make("li", "", key + ": " + value);
-        ul.appendChild(li);
-        count++;
-        if (count >= 4) break;
-      }
-      if (!count) {
-        const first = Object.entries(el.tags).slice(0, 3);
-        for (const [key, value] of first) ul.appendChild(make("li", "", key + ": " + value));
-      }
-      if (ul.children.length) root.appendChild(ul);
-      const button = make("button", "osm-popup-button", "Abrir detalle completo →");
-      button.type = "button";
-      button.addEventListener("click", () => {
-        openDetail(el);
-        if (mapLayerByKey.has(el.key)) {
-          const layer = mapLayerByKey.get(el.key);
-          if (layer.getBounds && layer.getBounds().isValid()) map.fitBounds(layer.getBounds().pad(.18), { maxZoom: 18 });
-          else if (layer.getLatLng) map.setView(layer.getLatLng(), Math.max(map.getZoom(), 17));
+      const custom = resolveMicrosection(el);
+      const root = make("div", "map-popup");
+      root.appendChild(make("h3", "", custom?.title || osmTitle(el)));
+      if (custom) {
+        root.appendChild(make("p", "", custom.summary));
+        if (custom.images[0]) {
+          const img = document.createElement("img"); img.src = custom.images[0].src; img.alt = custom.images[0].alt; root.appendChild(img);
         }
-        map.closePopup();
-      });
-      root.appendChild(button);
+        const button = make("button", "map-button primary", "Ver ficha de Celeiros →"); button.type = "button"; button.addEventListener("click", () => { renderDetail(el); map.closePopup(); }); root.appendChild(button);
+      } else {
+        root.appendChild(make("p", "", "Este elemento aínda non ten unha ficha propia de Celeiros."));
+        const button = make("button", "map-button", "Ver información do elemento"); button.type = "button"; button.addEventListener("click", () => { renderDetail(el); map.closePopup(); }); root.appendChild(button);
+      }
       return root;
     }
 
+    function focusElement(el) {
+      const layer = mapLayerByKey.get(el.key);
+      if (!layer) return;
+      const bounds = layer.getBounds?.();
+      if (bounds?.isValid?.()) {
+        if (map.getZoom() < 16 || map.getBounds().contains(bounds.getCenter()) === false) map.fitBounds(bounds.pad(0.12), { maxZoom: 18 });
+      } else if (layer.getLatLng) map.setView(layer.getLatLng(), Math.max(map.getZoom(), 17));
+    }
+
     function selectElement(el, showPopup) {
-      selectedKey = el.key;
-      renderList();
+      renderDetail(el);
+      renderMicrosectionList();
+      focusElement(el);
       if (showPopup) {
         const layer = mapLayerByKey.get(el.key);
-        if (layer) {
-          if (layer.getBounds && layer.getBounds().isValid()) {
-            if (map.getZoom() < 15) map.fitBounds(layer.getBounds().pad(.15), { maxZoom: 17 });
-            layer.bindPopup(buildPopup(el), { maxWidth: 300, minWidth: 220 }).openPopup();
-          } else if (layer.getLatLng) {
-            map.setView(layer.getLatLng(), Math.max(map.getZoom(), 16));
-            layer.bindPopup(buildPopup(el), { maxWidth: 300, minWidth: 220 }).openPopup();
-          }
-        } else {
-          openDetail(el);
-        }
+        if (layer) layer.bindPopup(buildPopup(el), { maxWidth: 300, minWidth: 210, autoPan: true }).openPopup();
       }
     }
 
-    function addDetailTable(container, rows) {
-      const wrap = make("div", "detail-table-wrap");
-      const table = make("table", "detail-table");
-      const tbody = document.createElement("tbody");
-      for (const [key, value] of rows) {
-        const tr = document.createElement("tr");
-        tr.appendChild(make("th", key === "key" ? "mono" : "", key));
-        tr.appendChild(make("td", "", String(value)));
-        tbody.appendChild(tr);
-      }
-      table.appendChild(tbody);
-      wrap.appendChild(table);
-      container.appendChild(wrap);
-    }
-
-    function openDetail(el) {
-      selectedKey = el.key;
-      $("detailId").textContent = elementTypeName(el.type) + " " + el.id;
-      const panel = $("detailPanel");
-      panel.replaceChildren();
-      panel.appendChild(make("span", "detail-type", elementTypeName(el.type)));
-      panel.appendChild(make("h3", "detail-title", displayName(el)));
-      panel.appendChild(make("p", "detail-placeholder", "Identificador OSM: " + el.id));
-
-      const actions = make("div", "detail-actions");
-      const osmLink = document.createElement("a");
-      osmLink.className = "map-button primary";
-      osmLink.href = "https://www.openstreetmap.org/" + el.type + "/" + encodeURIComponent(el.id);
-      osmLink.target = "_blank";
-      osmLink.rel = "noopener noreferrer";
-      osmLink.textContent = "Abrir en OpenStreetMap ↗";
-      actions.appendChild(osmLink);
-      const backButton = make("button", "map-button", "Volver ao resumo");
-      backButton.type = "button";
-      backButton.addEventListener("click", () => selectElement(el, true));
-      actions.appendChild(backButton);
-      panel.appendChild(actions);
-
-      panel.appendChild(make("h4", "detail-section-title", "Etiquetas completas (" + Object.keys(el.tags).length + ")"));
-      const tagRows = Object.entries(el.tags).sort((a, b) => a[0].localeCompare(b[0], "gl"));
-      if (tagRows.length) addDetailTable(panel, tagRows);
-      else panel.appendChild(make("p", "detail-placeholder", "Este elemento non ten etiquetas públicas."));
-
-      const metaRows = Object.entries(el.meta || {});
-      if (metaRows.length) {
-        panel.appendChild(make("h4", "detail-section-title", "Metadatos OSM"));
-        addDetailTable(panel, metaRows);
-      }
-
-      if (el.type === "way") {
-        panel.appendChild(make("h4", "detail-section-title", "Referencias de nodos (" + el.refs.length + ")"));
-        if (el.refs.length) {
-          const preview = el.refs.slice(0, 120).join(", ") + (el.refs.length > 120 ? " …" : "");
-          const pre = make("p", "detail-placeholder mono", preview);
-          panel.appendChild(pre);
-        } else panel.appendChild(make("p", "detail-placeholder", "Sen referencias de nodos."));
-      }
-
-      if (el.type === "relation") {
-        panel.appendChild(make("h4", "detail-section-title", "Membros (" + el.members.length + ")"));
-        if (el.members.length) {
-          const rows = el.members.slice(0, 300).map((m, i) => [String(i + 1) + ". " + m.type + "/" + m.ref, m.role || "(sen rol)"]);
-          addDetailTable(panel, rows);
-          if (el.members.length > 300) panel.appendChild(make("p", "detail-placeholder", "Amósanse os primeiros 300 membros."));
-        } else panel.appendChild(make("p", "detail-placeholder", "Esta relación non devolveu membros."));
-      }
-
-      if (el.type === "node") {
-        panel.appendChild(make("h4", "detail-section-title", "Coordenadas"));
-        addDetailTable(panel, [["Latitud", el.lat], ["Lonxitude", el.lon]]);
-      }
-    }
-
-    function listRecordMatches(el, query, filter) {
-      if (filter === "node" && el.type !== "node") return false;
-      if (filter === "way" && el.type !== "way") return false;
-      if (filter === "relation" && el.type !== "relation") return false;
-      if (filter === "tagged" && !hasTags(el)) return false;
-      if (!query) return true;
-      const haystack = [el.type, el.id, displayName(el), ...Object.entries(el.tags || {}).flat()].join(" ").toLocaleLowerCase();
-      return haystack.includes(query);
-    }
-
-    function renderList() {
-      const query = $("searchElements").value.trim().toLocaleLowerCase();
-      const filter = $("typeFilter").value;
-      filteredElements = allElements.filter(el => listRecordMatches(el, query, filter));
-      // Ordenar etiquetas primeiro polo nome para que o público atope lugares con facilidade.
-      filteredElements.sort((a, b) => {
-        const ta = hasTags(a) ? 0 : 1;
-        const tb = hasTags(b) ? 0 : 1;
-        return ta - tb || displayName(a).localeCompare(displayName(b), "gl") || a.id.localeCompare(b.id);
-      });
-      const pages = Math.max(1, Math.ceil(filteredElements.length / PAGE_SIZE));
-      currentPage = Math.max(0, Math.min(currentPage, pages - 1));
-      const start = currentPage * PAGE_SIZE;
-      const rows = filteredElements.slice(start, start + PAGE_SIZE);
-      const list = $("elementList");
-      list.replaceChildren();
-      $("resultCount").textContent = formatNumber(filteredElements.length) + " resultados";
-      $("listHint").textContent = filteredElements.length
-        ? "Amosando " + formatNumber(start + 1) + "–" + formatNumber(Math.min(start + PAGE_SIZE, filteredElements.length)) + " de " + formatNumber(filteredElements.length) + ". Preme nun elemento para ir a el no mapa."
-        : "Non hai elementos que coincidan coa busca.";
-      $("previousPage").disabled = currentPage <= 0;
-      $("nextPage").disabled = currentPage >= pages - 1;
-      if (!rows.length) {
-        list.appendChild(make("div", "empty-state", "Non hai elementos para mostrar."));
+    function renderMicrosectionList() {
+      const query = ($("searchMicrosections")?.value || "").trim().toLocaleLowerCase();
+      const visible = microsections.filter(item => `${item.title} ${item.category} ${item.summary} ${item.id} ${item.type}`.toLocaleLowerCase().includes(query));
+      $("microCount").textContent = `${microsections.length} ${microsections.length === 1 ? "ficha" : "fichas"}`;
+      const list = $("microList"); list.replaceChildren();
+      if (!visible.length) {
+        list.appendChild(make("div", "empty-state", microsections.length ? "Non hai fichas que coincidan coa busca." : "Aínda non hai microseccións configuradas. Engade unha ficha en microsecciones-mapa.html; o ID OSM fará que se asocie ao lugar correcto."));
         return;
       }
-      for (const el of rows) {
-        const button = make("button", "element-row");
-        button.type = "button";
-        button.setAttribute("aria-current", selectedKey === el.key ? "true" : "false");
-        button.appendChild(make("span", "element-kind", elementShortType(el.type)));
-        const text = document.createElement("span");
-        text.appendChild(make("strong", "", displayName(el)));
-        text.appendChild(make("small", "", elementTypeName(el.type) + " · ID " + el.id));
-        button.appendChild(text);
+      visible.forEach(item => {
+        const el = elementByKey.get(item.key);
+        const button = make("button", "micro-row"); button.type = "button"; button.setAttribute("aria-current", selectedKey === item.key ? "true" : "false");
+        const imageWrap = make("span", "micro-row-image");
+        if (item.images[0]) { const img = document.createElement("img"); img.src = item.images[0].src; img.alt = ""; img.loading = "lazy"; img.addEventListener("error", () => { img.remove(); }); imageWrap.appendChild(img); }
+        button.appendChild(imageWrap);
+        const copy = document.createElement("span"); copy.appendChild(make("strong", "", item.title)); copy.appendChild(make("small", "", `${item.category} · ${item.type}/${item.id}`)); copy.appendChild(make("small", "micro-row-summary", item.summary));
+        if (!el && osmElements.length) copy.appendChild(make("small", "", "O elemento non apareceu na consulta; revisa o ID ou a zona."));
+        button.appendChild(copy);
         button.addEventListener("click", () => {
-          const layer = mapLayerByKey.get(el.key);
-          if (layer) {
-            selectElement(el, true);
-          } else {
-            openDetail(el);
-            const bounds = getFeatureBounds(el);
-            if (bounds && bounds.isValid()) map.fitBounds(bounds.pad(.15), { maxZoom: 17 });
+          if (el) selectElement(el, true);
+          else {
+            selectedKey = item.key; renderMicrosectionList();
+            const panel = $("detailPanel"); panel.replaceChildren(make("p", "detail-kicker", item.category), make("h3", "detail-title", item.title), make("p", "detail-summary", item.summary), make("p", "detail-placeholder", `Ficha configurada para ${item.type}/${item.id}, pero o elemento non chegou na resposta do servizo cartográfico. Comproba o número do ID, o tipo e que estea dentro da zona do mapa.`));
+            if (item.description) { const description = make("div", "detail-description"); safeCopyContent(item.description, description); panel.appendChild(description); }
           }
         });
         list.appendChild(button);
-      }
-    }
-
-    function setCounts(counts) {
-      $("nodesCount").textContent = formatNumber(counts.nodes);
-      $("waysCount").textContent = formatNumber(counts.ways);
-      $("relationsCount").textContent = formatNumber(counts.relations);
-      $("taggedCount").textContent = formatNumber(allElements.filter(hasTags).length);
+      });
     }
 
     function initializeMap() {
-      if (!window.L) throw new Error("Non se puido cargar a biblioteca do mapa. Comproba a conexión e que o CDN de Leaflet non estea bloqueado.");
-      map = L.map("map", { zoomControl: true, preferCanvas: true }).setView([42.167, -8.452], 15);
-      queryBounds = L.latLngBounds(
-        [AREA.south, AREA.west],
-        [AREA.north, AREA.east]
-      );
-      baseLayer = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        minZoom: 3,
-        maxZoom: 19,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>',
-        crossOrigin: true
+      if (!window.L) throw new Error("Non se puido cargar Leaflet. Comproba a conexión co CDN do mapa.");
+      map = L.map("map", { zoomControl: true }).setView([42.167, -8.452], 15);
+      mapBounds = L.latLngBounds([AREA.south, AREA.west], [AREA.north, AREA.east]);
+      const tiles = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        minZoom: 3, maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>'
       });
-      baseLayer.on("tileerror", () => {
-        // Non amosar códigos HTTP técnicos ao público; o mapa segue usable cos datos vectoriais.
-        const hint = $("mapHint");
-        if (hint && !allElements.length) hint.textContent = "Cargando o fondo cartográfico…";
-      });
-      baseLayer.on("load", () => {
-        if (allElements.length) $("mapHint").textContent = "Cartografía e elementos en liña";
-      });
-      baseLayer.addTo(map);
+      tiles.on("tileerror", () => { $("mapHint").textContent = "O fondo cartográfico non está dispoñible temporalmente."; });
+      tiles.on("load", () => { if (!osmElements.length) $("mapHint").textContent = "Fondo OpenStreetMap"; });
+      tiles.addTo(map);
       dataLayer = L.featureGroup().addTo(map);
+      map.fitBounds(mapBounds, { padding: [10, 10], maxZoom: 17 });
     }
 
-    function fitToData() {
-      if (queryBounds && queryBounds.isValid()) {
-        map.fitBounds(queryBounds, { padding: [18, 18], maxZoom: 17 });
-        return;
-      }
-      if (dataLayer && dataLayer.getLayers().length) {
-        const bounds = dataLayer.getBounds();
-        if (bounds.isValid()) map.fitBounds(bounds.pad(.06), { maxZoom: 17 });
-      }
+    function fitToArea() {
+      if (mapBounds?.isValid()) map.fitBounds(mapBounds, { padding: [12, 12], maxZoom: 17 });
     }
 
     async function start() {
-      try {
-        initializeMap();
-      } catch (error) {
-        setStatus(error.message || "Non se puido iniciar o mapa.", "error");
-        $("mapHint").textContent = "Mapa non dispoñible";
-        return;
+      try { initializeMap(); }
+      catch (error) { status(error.message || "Non se puido iniciar o mapa.", "error"); $("mapHint").textContent = "Mapa non dispoñible"; return; }
+
+      // A lectura editorial é independente do servizo Overpass.
+      try { await loadMicrosections(); }
+      catch (error) {
+        console.error("Microseccións:", error);
+        $("microList").replaceChildren(make("div", "empty-state", "Non se puido ler microsecciones-mapa.html. Comproba que o arquivo estea publicado xunto a mapa.html."));
+        status("O mapa base está activo, pero non se puideron cargar as microseccións editoriais.", "error");
       }
 
-      // Mostrar xa a zona coñecida, mesmo mentres responden os servizos externos.
-      fitToData();
-      setStatus("Cargando os elementos públicos de OpenStreetMap para Celeiros…");
-
       try {
-        const source = await fetchOnlineElements();
-        const counts = parseOnlineElements(source.data);
-        createDataLayer();
-        setCounts(counts);
-        fitToData();
-        renderList();
-        setStatus(
-          "Mapa listo: " + formatNumber(allElements.length) +
-          " elementos de OpenStreetMap cargados. Preme nun elemento para ver os datos principais e abrir o detalle completo.",
-          "success"
-        );
-        $("mapHint").textContent = "Elementos públicos en liña";
-      } catch (_) {
-        // Mensaxe pública útil sen expoñer URL internas nin códigos de resposta.
-        setStatus(
-          "Agora non foi posible obter os datos interactivos. O fondo do mapa segue dispoñible; proba de novo máis tarde.",
-          "error"
-        );
-        $("elementList").replaceChildren(
-          make("div", "empty-state", "Os datos interactivos están temporalmente indispoñibles. O fondo cartográfico segue activo.")
-        );
-        $("listHint").textContent = "Servizos de datos temporariamente non dispoñibles.";
-        $("mapHint").textContent = "Fondo cartográfico activo";
+        status("Cargando os elementos xeográficos de OpenStreetMap…");
+        const data = await fetchOnlineElements();
+        const count = normalizeElements(data);
+        createTransparentLayers();
+        $("mapHint").textContent = "Fondo OSM + zonas de clic transparentes";
+        status(`Mapa preparado. Cargáronse ${formatInt(count.nodes)} nodos, ${formatInt(count.ways)} vías e ${formatInt(count.relations)} relacións. As liñas e áreas interactivas son transparentes.`, "success");
+        // Axuda a abrir no mapa a primeira microsección, se xa foi configurada.
+        renderMicrosectionList();
+      } catch (error) {
+        console.error("Datos cartográficos:", error);
+        $("mapHint").textContent = "Fondo OpenStreetMap";
+        status(error.message || "Non se puideron cargar os elementos interactivos. O fondo cartográfico segue visible.", "error");
       }
     }
 
-    $("fitMap").addEventListener("click", fitToData);
-    $("showAll").addEventListener("click", () => {
-      $("searchElements").value = "";
-      $("typeFilter").value = "all";
-      currentPage = 0;
-      renderList();
-      fitToData();
+    $("fitMap").addEventListener("click", fitToArea);
+    $("showMicrosections").addEventListener("click", () => { $("searchMicrosections").value = ""; renderMicrosectionList(); if (microsections.length) { const first = elementByKey.get(microsections[0].key); if (first) selectElement(first, true); } else fitToArea(); });
+    $("searchMicrosections").addEventListener("input", renderMicrosectionList);
+    $("clearSearch").addEventListener("click", () => { $("searchMicrosections").value = ""; renderMicrosectionList(); $("searchMicrosections").focus(); });
+
+    // Menú móbil do CSS compartido.
+    const menuButton = document.querySelector(".menu-button");
+    const nav = $("site-nav");
+    if (menuButton && nav) menuButton.addEventListener("click", () => {
+      const opened = menuButton.getAttribute("aria-expanded") === "true";
+      menuButton.setAttribute("aria-expanded", String(!opened)); nav.classList.toggle("is-open", !opened);
     });
-    $("searchElements").addEventListener("input", () => { currentPage = 0; renderList(); });
-    $("typeFilter").addEventListener("change", () => { currentPage = 0; renderList(); });
-    $("previousPage").addEventListener("click", () => { currentPage--; renderList(); });
-    $("nextPage").addEventListener("click", () => { currentPage++; renderList(); });
 
     start();
   })();
