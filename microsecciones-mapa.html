@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="gl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Fichas editoriais de lugares e elementos do mapa de Celeiros.">
+  <title>Fichas do mapa · Celeiros</title>
+  <link rel="stylesheet" href="css/estilo-natural.css">
+  <style>
+    .catalog-page { width:min(1100px,calc(100% - 32px)); margin:0 auto; padding:32px 0 56px; }
+    .catalog-page h1 { font-size:clamp(2rem,4vw,3rem); margin:.25em 0; }
+    .catalog-intro { max-width:850px; color:var(--muted); line-height:1.7; }
+    .catalog-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px; margin-top:28px; }
+    .map-microsection { overflow:hidden; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); box-shadow:var(--shadow); }
+    .micro-card-body { padding:18px; }
+    .micro-category { display:inline-block; margin:0 0 8px; padding:4px 9px; border-radius:999px; background:var(--accent-soft); color:var(--accent); font-size:.78rem; font-weight:800; }
+    .micro-title { margin:0 0 9px; font-size:1.25rem; }
+    .micro-summary { font-weight:700; line-height:1.55; }
+    .micro-description { line-height:1.7; }
+    .micro-images { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin:15px 0; }
+    .micro-images figure { margin:0; min-width:0; }
+    .micro-images img { display:block; width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:9px; background:var(--surface-2); }
+    .micro-images figcaption { padding-top:5px; color:var(--muted); font-size:.8rem; }
+    .micro-facts { margin:15px 0; border-top:1px solid var(--line); }
+    .micro-facts > div { display:grid; grid-template-columns:minmax(80px,.65fr) 1fr; gap:10px; padding:9px 0; border-bottom:1px solid var(--line); }
+    .micro-facts dt { font-weight:800; color:var(--muted); }
+    .micro-facts dd { margin:0; }
+    .micro-links { display:flex; flex-wrap:wrap; gap:8px; margin-top:13px; }
+    .micro-links a { display:inline-flex; padding:8px 11px; border-radius:9px; background:var(--accent); color:white; text-decoration:none; font-weight:750; }
+    .empty-catalog { padding:24px; border:1px dashed var(--line); border-radius:var(--radius); color:var(--muted); line-height:1.7; margin-top:24px; }
+    .catalog-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:20px; }
+    @media(max-width:600px) { .catalog-page{width:calc(100% - 20px)} }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html"><span class="brand-symbol">C</span><span><strong>Celeiros</strong><small>Ponteareas · Pontevedra</small></span></a>
+      <nav class="site-nav" aria-label="Navegación principal">
+        <a href="index.html">Inicio</a><a href="parques-infantiles.html">Parques</a><a href="teleclub.html">Teleclub</a><a href="carballeira-dance.html">Dance</a><a href="carballeira-rock.html">Rock</a><a href="galeria.html">Galería</a><a href="mapa.html">Mapa</a><a href="contacto.html">Contacto</a>
+      </nav>
+    </div>
+  </header>
+  <main class="catalog-page">
+    <p class="eyebrow">Contido editorial do mapa</p>
+    <h1>Microseccións do mapa</h1>
+    <p class="catalog-intro">Cada ficha relaciona un elemento de OpenStreetMap cunha descrición local. O identificador OSM serve para saber onde está; o título, o resumo, o texto, as fotografías e os datos prácticos escríbense aquí e son os que se mostran aos visitantes. Esta páxina é tamén o catálogo que consulta <a href="mapa.html">mapa.html</a>.</p>
+
+    <div class="catalog-actions"><a class="button button-primary" href="mapa.html">← Volver ao mapa</a></div>
+
+    <div id="map-microsections" class="catalog-list">
+      <!--
+        ==========================================================
+        ENGADIR UNHA MICROSECCIÓN
+        ==========================================================
+        Copia o bloque de exemplo que hai máis abaixo e pégao dentro
+        deste div. Substitúe o tipo e o ID por datos reais de OSM.
+
+        data-osm-type pode ser: node, way ou relation.
+        data-osm-id é só o número que aparece na URL de OSM.
+        Exemplo: https://www.openstreetmap.org/node/123456789
+        -> data-osm-type="node" data-osm-id="123456789"
+
+        Non escribas coordenadas manualmente se o elemento xa existe en
+        OSM: o mapa utilizará as súas coordenadas e xeometría reais.
+        O resumo e a descrición si son teus e non teñen que existir en OSM.
+      -->
+      <p id="empty-catalog" class="empty-catalog">Aínda non hai microseccións publicadas. Para engadir a primeira, copia o bloque do modelo do código fonte, cambia o identificador de OpenStreetMap e completa o texto e as imaxes.</p>
+    </div>
+  </main>
+  <footer class="site-footer"><div class="container footer-inner"><div><strong>Celeiros</strong><span>Ponteareas · Pontevedra</span></div><nav class="footer-links" aria-label="Ligazóns do pé de páxina"><a href="index.html">Inicio</a><a href="mapa.html">Mapa</a><a href="contacto.html">Contacto</a></nav></div></footer>
+
+  <!--
+    MODELO PARA COPIAR. Non está publicado porque está dentro dun template.
+    Cando crees unha ficha, copia o article completo ao div #map-microsections.
+    Podes borrar ou duplicar imaxes, datos prácticos e ligazóns segundo precises.
+  -->
+  <template id="modelo-microseccion">
+    <article class="map-microsection" data-osm-type="node" data-osm-id="123456789">
+      <div class="micro-card-body">
+        <p class="micro-category">Patrimonio</p>
+        <h2 class="micro-title">Nome do lugar</h2>
+        <p class="micro-summary">Un resumo curto que aparecerá na ventá do mapa e na lista de fichas.</p>
+        <div class="micro-description">
+          <p>Escribe aquí a descrición completa en palabras propias. Podes explicar a historia do lugar, por que é importante para Celeiros e que debería saber quen o visita.</p>
+          <p>Engade os parágrafos que precises. Tamén se admiten <strong>texto en grosa</strong>, <em>cursiva</em> e listas.</p>
+        </div>
+        <div class="micro-images">
+          <figure>
+            <img src="img/mapa/foto-lugar.jpg" alt="Descrición da fotografía do lugar" loading="lazy">
+            <figcaption>Texto curto da fotografía (opcional).</figcaption>
+          </figure>
+        </div>
+        <dl class="micro-facts">
+          <div><dt>Acceso</dt><dd>Engade información útil ou elimina esta liña.</dd></div>
+          <div><dt>Horario</dt><dd>Se non hai horario relevante, borra esta liña.</dd></div>
+        </dl>
+        <div class="micro-links">
+          <a href="contacto.html">Aportar información</a>
+        </div>
+      </div>
+    </article>
+  </template>
+  <script>
+    const catalogItems = document.querySelectorAll("#map-microsections > .map-microsection");
+    const emptyCatalog = document.getElementById("empty-catalog");
+    if (catalogItems.length && emptyCatalog) emptyCatalog.hidden = true;
+    const menuButton = document.querySelector(".menu-button");
+    const nav = document.getElementById("site-nav");
+    if (menuButton && nav) menuButton.addEventListener("click", () => {
+      const opened = menuButton.getAttribute("aria-expanded") === "true";
+      menuButton.setAttribute("aria-expanded", String(!opened));
+      nav.classList.toggle("is-open", !opened);
+    });
+  </script>
+</body>
+</html>
